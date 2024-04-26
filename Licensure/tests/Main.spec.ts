@@ -238,4 +238,54 @@ describe('Main', () => {
 
         expect(arrayAfter.length).toBeLessThan(arrayBefore.length)
     });
+
+    it('should status change', async () => {
+        const createdAt = new Date();
+        const dateString = createdAt.toISOString();
+
+        await main.send(
+            deployer.getSender(),
+            {
+                value: toNano('0.05')
+            },
+            {
+                $$type: 'LicenseCreate',
+                licenseId: 1234567n,
+                sellerAddress: deployer.address,
+                buyerAddress: deployer.address,
+                createdAt: dateString,
+                contentName: 'Videos with cats',
+                contentDescription: "super",
+                contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
+                licenseType: "Restricted license",
+                contentCategory: "Video",
+                contentSubcategory: "Internet video",
+                price: 50n,
+                currency: "TON",
+                allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+                additionalTerms: "",
+                status: "Pending"
+            }
+        )
+
+        const licenseBefore = await main.getLicense(1234567n)
+        console.log("licenseBefore:", licenseBefore.status)
+
+        await main.send(
+            deployer.getSender(),
+            {
+                value: toNano('0.05')
+            },
+            {
+                $$type: 'StatusChange',
+                licenseId: 1234567n,
+                newStatus: "Paid"
+            }
+        )
+
+        const licenseAfter = await main.getLicense(1234567n)
+        console.log("licenseAfter:", licenseAfter.status)
+
+        expect(licenseBefore.status.toString() != licenseAfter.status.toString())
+    });
 });

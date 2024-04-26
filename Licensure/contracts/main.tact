@@ -45,6 +45,11 @@ message LicenseDelete {
     licenseId: Int as uint64;
 }
 
+message StatusChange {
+    licenseId: Int as uint64;
+    newStatus: String;
+}
+
 contract Main with Deployable {
     id: Int as uint32;
     licenses: LicenseArray;
@@ -80,6 +85,13 @@ contract Main with Deployable {
     receive(msg: LicenseDelete) {
         self.licenses.map.set(msg.licenseId, null);
         self.licenses.length = self.licenses.length - 1;
+    }
+
+    receive(msg: StatusChange) {
+        let license: License = self.licenses.map.get(msg.licenseId)!!;
+        license.status = msg.newStatus;
+        self.licenses.map.set(msg.licenseId, null);
+        self.licenses.map.set(msg.licenseId, license);
     }
 
     get fun arrayOfLicenses(): LicenseArray {
