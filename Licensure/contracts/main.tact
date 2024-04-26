@@ -46,9 +46,11 @@ message LicenseDelete {
 }
 
 contract Main with Deployable {
+    id: Int as uint32;
     licenses: LicenseArray;
 
-    init() {
+    init(id: Int) {
+        self.id = id;
         self.licenses = LicenseArray{map: emptyMap()};
     }
 
