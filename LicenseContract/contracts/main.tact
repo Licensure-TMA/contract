@@ -99,6 +99,7 @@ contract Main with Deployable {
     }
 
     get fun License(licenseId: Int): License {
-        return self.licenses.map.get(licenseId)!!;
+        let license: License = self.licenses.map.get(licenseId)!!;
+        return license;
     }
 }

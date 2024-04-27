@@ -1,4 +1,4 @@
-# Licensure
+# LicenseContract
 
 ## Project structure
 
