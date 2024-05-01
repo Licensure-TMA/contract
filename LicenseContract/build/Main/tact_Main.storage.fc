@@ -1,0 +1,270 @@
+;;
+;; Type: StateInit
+;; TLB: _ code:^cell data:^cell = StateInit
+;;
+
+((cell, cell)) $StateInit$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (cell vvv'code, cell vvv'data) = __tact_tuple_destroy_2(v);
+    return (vvv'code, vvv'data);
+}
+
+;;
+;; Type: SendParameters
+;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
+;;
+
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline {
+    return (bounce, to, value, mode, body, code, data);
+}
+
+;;
+;; Type: Deploy
+;; Header: 0x946a98b6
+;; TLB: deploy#946a98b6 queryId:uint64 = Deploy
+;;
+
+(slice, ((int))) $Deploy$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2490013878);
+    var v'queryId = sc_0~load_uint(64);
+    return (sc_0, (v'queryId));
+}
+
+;;
+;; Type: DeployOk
+;; Header: 0xaff90f57
+;; TLB: deploy_ok#aff90f57 queryId:uint64 = DeployOk
+;;
+
+builder $DeployOk$_store(builder build_0, (int) v) inline {
+    var (v'queryId) = v;
+    build_0 = store_uint(build_0, 2952335191, 32);
+    build_0 = build_0.store_uint(v'queryId, 64);
+    return build_0;
+}
+
+cell $DeployOk$_store_cell((int) v) inline {
+    return $DeployOk$_store(begin_cell(), v).end_cell();
+}
+
+((int)) $DeployOk$_constructor_queryId(int queryId) inline {
+    return (queryId);
+}
+
+;;
+;; Type: LicenseCreate
+;; Header: 0x52770d26
+;; TLB: license_create#52770d26 licenseId:uint64 sellerAddress:address buyerAddress:address createdAt:^string contentName:^string contentDescription:^string contentUrls:^string licenseType:^string contentCategory:^string contentSubcategory:^string price:coins currency:^string allRestrictions:^string additionalTerms:^string status:^string = LicenseCreate
+;;
+
+(slice, ((int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice))) $LicenseCreate$_load(slice sc_0) inline_ref {
+    throw_unless(129, sc_0~load_uint(32) == 1383533862);
+    var v'licenseId = sc_0~load_uint(64);
+    var v'sellerAddress = sc_0~__tact_load_address();
+    var v'buyerAddress = sc_0~__tact_load_address();
+    var v'createdAt = sc_0~load_ref().begin_parse();
+    var v'contentName = sc_0~load_ref().begin_parse();
+    var v'contentDescription = sc_0~load_ref().begin_parse();
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'contentUrls = sc_1~load_ref().begin_parse();
+    var v'licenseType = sc_1~load_ref().begin_parse();
+    var v'contentCategory = sc_1~load_ref().begin_parse();
+    slice sc_2 = sc_1~load_ref().begin_parse();
+    var v'contentSubcategory = sc_2~load_ref().begin_parse();
+    var v'price = sc_2~load_coins();
+    var v'currency = sc_2~load_ref().begin_parse();
+    var v'allRestrictions = sc_2~load_ref().begin_parse();
+    slice sc_3 = sc_2~load_ref().begin_parse();
+    var v'additionalTerms = sc_3~load_ref().begin_parse();
+    var v'status = sc_3~load_ref().begin_parse();
+    return (sc_0, (v'licenseId, v'sellerAddress, v'buyerAddress, v'createdAt, v'contentName, v'contentDescription, v'contentUrls, v'licenseType, v'contentCategory, v'contentSubcategory, v'price, v'currency, v'allRestrictions, v'additionalTerms, v'status));
+}
+
+;;
+;; Type: License
+;; TLB: _ licenseId:uint64 sellerAddress:address buyerAddress:address createdAt:^string contentName:^string contentDescription:^string contentUrls:^string licenseType:^string contentCategory:^string contentSubcategory:^string price:coins currency:^string allRestrictions:^string additionalTerms:^string status:^string = License
+;;
+
+builder $License$_store(builder build_0, (int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice) v) inline_ref {
+    var (v'licenseId, v'sellerAddress, v'buyerAddress, v'createdAt, v'contentName, v'contentDescription, v'contentUrls, v'licenseType, v'contentCategory, v'contentSubcategory, v'price, v'currency, v'allRestrictions, v'additionalTerms, v'status) = v;
+    build_0 = build_0.store_uint(v'licenseId, 64);
+    build_0 = __tact_store_address(build_0, v'sellerAddress);
+    build_0 = __tact_store_address(build_0, v'buyerAddress);
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'createdAt).end_cell());
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'contentName).end_cell());
+    build_0 = build_0.store_ref(begin_cell().store_slice(v'contentDescription).end_cell());
+    var build_1 = begin_cell();
+    build_1 = build_1.store_ref(begin_cell().store_slice(v'contentUrls).end_cell());
+    build_1 = build_1.store_ref(begin_cell().store_slice(v'licenseType).end_cell());
+    build_1 = build_1.store_ref(begin_cell().store_slice(v'contentCategory).end_cell());
+    var build_2 = begin_cell();
+    build_2 = build_2.store_ref(begin_cell().store_slice(v'contentSubcategory).end_cell());
+    build_2 = build_2.store_coins(v'price);
+    build_2 = build_2.store_ref(begin_cell().store_slice(v'currency).end_cell());
+    build_2 = build_2.store_ref(begin_cell().store_slice(v'allRestrictions).end_cell());
+    var build_3 = begin_cell();
+    build_3 = build_3.store_ref(begin_cell().store_slice(v'additionalTerms).end_cell());
+    build_3 = build_3.store_ref(begin_cell().store_slice(v'status).end_cell());
+    build_2 = store_ref(build_2, build_3.end_cell());
+    build_1 = store_ref(build_1, build_2.end_cell());
+    build_0 = store_ref(build_0, build_1.end_cell());
+    return build_0;
+}
+
+cell $License$_store_cell((int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice) v) inline {
+    return $License$_store(begin_cell(), v).end_cell();
+}
+
+((int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice)) $License$_not_null(tuple v) inline {
+    throw_if(128, null?(v));
+    var (int vvv'licenseId, slice vvv'sellerAddress, slice vvv'buyerAddress, slice vvv'createdAt, slice vvv'contentName, slice vvv'contentDescription, slice vvv'contentUrls, slice vvv'licenseType, slice vvv'contentCategory, slice vvv'contentSubcategory, int vvv'price, slice vvv'currency, slice vvv'allRestrictions, slice vvv'additionalTerms, slice vvv'status) = __tact_tuple_destroy_15(v);
+    return (vvv'licenseId, vvv'sellerAddress, vvv'buyerAddress, vvv'createdAt, vvv'contentName, vvv'contentDescription, vvv'contentUrls, vvv'licenseType, vvv'contentCategory, vvv'contentSubcategory, vvv'price, vvv'currency, vvv'allRestrictions, vvv'additionalTerms, vvv'status);
+}
+
+cell $License$_store_opt(tuple v) inline {
+    if (null?(v)) {
+        return null();
+    }
+    return $License$_store_cell($License$_not_null(v));
+}
+
+(slice, ((int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice))) $License$_load(slice sc_0) inline_ref {
+    var v'licenseId = sc_0~load_uint(64);
+    var v'sellerAddress = sc_0~__tact_load_address();
+    var v'buyerAddress = sc_0~__tact_load_address();
+    var v'createdAt = sc_0~load_ref().begin_parse();
+    var v'contentName = sc_0~load_ref().begin_parse();
+    var v'contentDescription = sc_0~load_ref().begin_parse();
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'contentUrls = sc_1~load_ref().begin_parse();
+    var v'licenseType = sc_1~load_ref().begin_parse();
+    var v'contentCategory = sc_1~load_ref().begin_parse();
+    slice sc_2 = sc_1~load_ref().begin_parse();
+    var v'contentSubcategory = sc_2~load_ref().begin_parse();
+    var v'price = sc_2~load_coins();
+    var v'currency = sc_2~load_ref().begin_parse();
+    var v'allRestrictions = sc_2~load_ref().begin_parse();
+    slice sc_3 = sc_2~load_ref().begin_parse();
+    var v'additionalTerms = sc_3~load_ref().begin_parse();
+    var v'status = sc_3~load_ref().begin_parse();
+    return (sc_0, (v'licenseId, v'sellerAddress, v'buyerAddress, v'createdAt, v'contentName, v'contentDescription, v'contentUrls, v'licenseType, v'contentCategory, v'contentSubcategory, v'price, v'currency, v'allRestrictions, v'additionalTerms, v'status));
+}
+
+tuple $License$_as_optional((int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice) v) inline {
+    var (v'licenseId, v'sellerAddress, v'buyerAddress, v'createdAt, v'contentName, v'contentDescription, v'contentUrls, v'licenseType, v'contentCategory, v'contentSubcategory, v'price, v'currency, v'allRestrictions, v'additionalTerms, v'status) = v;
+    return __tact_tuple_create_15(v'licenseId, v'sellerAddress, v'buyerAddress, v'createdAt, v'contentName, v'contentDescription, v'contentUrls, v'licenseType, v'contentCategory, v'contentSubcategory, v'price, v'currency, v'allRestrictions, v'additionalTerms, v'status);
+}
+
+tuple $License$_load_opt(cell cl) inline {
+    if (null?(cl)) {
+        return null();
+    }
+    var sc = cl.begin_parse();
+    return $License$_as_optional(sc~$License$_load());
+}
+
+(int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice) $License$_to_external(((int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice)) v) inline {
+    var (v'licenseId, v'sellerAddress, v'buyerAddress, v'createdAt, v'contentName, v'contentDescription, v'contentUrls, v'licenseType, v'contentCategory, v'contentSubcategory, v'price, v'currency, v'allRestrictions, v'additionalTerms, v'status) = v; 
+    return (v'licenseId, v'sellerAddress, v'buyerAddress, v'createdAt, v'contentName, v'contentDescription, v'contentUrls, v'licenseType, v'contentCategory, v'contentSubcategory, v'price, v'currency, v'allRestrictions, v'additionalTerms, v'status);
+}
+
+((int, slice, slice, slice, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice)) $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status(int licenseId, slice sellerAddress, slice buyerAddress, slice createdAt, slice contentName, slice contentDescription, slice contentUrls, slice licenseType, slice contentCategory, slice contentSubcategory, int price, slice currency, slice allRestrictions, slice additionalTerms, slice status) inline {
+    return (licenseId, sellerAddress, buyerAddress, createdAt, contentName, contentDescription, contentUrls, licenseType, contentCategory, contentSubcategory, price, currency, allRestrictions, additionalTerms, status);
+}
+
+;;
+;; Type: LicenseArray
+;; TLB: _ map:dict<int, ^License{licenseId:uint64,sellerAddress:address,buyerAddress:address,createdAt:^string,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}> length:uint64 = LicenseArray
+;;
+
+builder $LicenseArray$_store(builder build_0, (cell, int) v) inline {
+    var (v'map, v'length) = v;
+    build_0 = build_0.store_dict(v'map);
+    build_0 = build_0.store_uint(v'length, 64);
+    return build_0;
+}
+
+(slice, ((cell, int))) $LicenseArray$_load(slice sc_0) inline {
+    var v'map = sc_0~load_dict();
+    var v'length = sc_0~load_uint(64);
+    return (sc_0, (v'map, v'length));
+}
+
+(cell, int) $LicenseArray$_to_external(((cell, int)) v) inline {
+    var (v'map, v'length) = v; 
+    return (v'map, v'length);
+}
+
+((cell, int)) $LicenseArray$_constructor_map(cell map) inline {
+    return (map, 0);
+}
+
+;;
+;; Type: LicenseDelete
+;; Header: 0x4716b8fb
+;; TLB: license_delete#4716b8fb licenseId:uint64 = LicenseDelete
+;;
+
+(slice, ((int))) $LicenseDelete$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1192671483);
+    var v'licenseId = sc_0~load_uint(64);
+    return (sc_0, (v'licenseId));
+}
+
+;;
+;; Type: StatusChange
+;; Header: 0x1ddd380d
+;; TLB: status_change#1ddd380d licenseId:uint64 newStatus:^string = StatusChange
+;;
+
+(slice, ((int, slice))) $StatusChange$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 501037069);
+    var v'licenseId = sc_0~load_uint(64);
+    var v'newStatus = sc_0~load_ref().begin_parse();
+    return (sc_0, (v'licenseId, v'newStatus));
+}
+
+;;
+;; Type: Main
+;;
+
+builder $Main$_store(builder build_0, (int, (cell, int)) v) inline {
+    var (v'id, (v'licenses'map, v'licenses'length)) = v;
+    build_0 = build_0.store_uint(v'id, 32);
+    build_0 = $LicenseArray$_store(build_0, (v'licenses'map, v'licenses'length));
+    return build_0;
+}
+
+(slice, ((int, (cell, int)))) $Main$_load(slice sc_0) inline {
+    var v'id = sc_0~load_uint(32);
+    var v'licenses = sc_0~$LicenseArray$_load();
+    return (sc_0, (v'id, v'licenses));
+}
+
+(slice, ((int))) $Main$init$_load(slice sc_0) inline {
+    var v'id = sc_0~load_int(257);
+    return (sc_0, (v'id));
+}
+
+(int, (cell, int)) $Main$_contract_load() impure inline_ref {
+    slice $sc = get_data().begin_parse();
+    __tact_context_sys = $sc~load_ref();
+    int $loaded = $sc~load_int(1);
+    if ($loaded) {
+        return $sc~$Main$_load();
+    } else {
+        ;; Allow only workchain deployments
+        throw_unless(137, my_address().preload_uint(11) == 1024);
+        (int id) = $sc~$Main$init$_load();
+        $sc.end_parse();
+        return $Main$_contract_init(id);
+    }
+}
+
+() $Main$_contract_store((int, (cell, int)) v) impure inline {
+    builder b = begin_cell();
+    b = b.store_ref(__tact_context_sys);
+    b = b.store_int(true, 1);
+    b = $Main$_store(b, v);
+    set_data(b.end_cell());
+}

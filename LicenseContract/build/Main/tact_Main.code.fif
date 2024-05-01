@@ -1,0 +1,821 @@
+PROGRAM{
+  DECLPROC __tact_verify_address
+  DECLPROC __tact_load_address
+  DECLPROC __tact_store_address
+  DECLPROC __tact_my_balance
+  DECLPROC __tact_not_null
+  DECLPROC __tact_context_get
+  DECLPROC __tact_context_get_sender
+  DECLPROC __tact_store_bool
+  DECLPROC __tact_dict_set_int_cell
+  DECLPROC __tact_dict_get_int_cell
+  DECLPROC $Deploy$_load
+  DECLPROC $DeployOk$_store
+  DECLPROC $DeployOk$_store_cell
+  DECLPROC $LicenseCreate$_load
+  DECLPROC $License$_store
+  DECLPROC $License$_store_cell
+  DECLPROC $License$_not_null
+  DECLPROC $License$_store_opt
+  DECLPROC $License$_load
+  DECLPROC $License$_as_optional
+  DECLPROC $License$_load_opt
+  DECLPROC $LicenseArray$_store
+  DECLPROC $LicenseArray$_load
+  DECLPROC $LicenseDelete$_load
+  DECLPROC $StatusChange$_load
+  DECLPROC $Main$_store
+  DECLPROC $Main$_load
+  DECLPROC $StateInit$_not_null
+  DECLPROC $License$_to_external
+  DECLPROC $LicenseArray$_to_external
+  DECLPROC $Main$init$_load
+  DECLPROC $LicenseArray$_constructor_map
+  DECLPROC $Main$_contract_init
+  DECLPROC $Main$_contract_load
+  DECLPROC $Main$_contract_store
+  DECLPROC $global_send
+  DECLPROC $Main$_fun_arrayOfLicenses
+  DECLPROC $Main$_fun_License
+  DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
+  DECLPROC $Main$_fun_forward
+  DECLPROC $Main$_fun_notify
+  DECLPROC $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status
+  DECLPROC $DeployOk$_constructor_queryId
+  DECLPROC $Main$_internal_binary_LicenseCreate
+  DECLPROC $Main$_internal_binary_LicenseDelete
+  DECLPROC $Main$_internal_binary_StatusChange
+  DECLPROC $Main$_internal_binary_Deploy
+  104337 DECLMETHOD %arrayOfLicenses
+  93063 DECLMETHOD %License
+  113617 DECLMETHOD supported_interfaces
+  121275 DECLMETHOD get_abi_ipfs
+  115390 DECLMETHOD lazy_deployment_completed
+  DECLPROC $Main$_contract_router_internal
+  DECLPROC recv_internal
+  DECLGLOBVAR __tact_context
+  DECLGLOBVAR __tact_context_sender
+  DECLGLOBVAR __tact_context_sys
+  DECLGLOBVAR __tact_randomized
+  __tact_verify_address PROCINLINE:<{
+    DUP
+    SBITS
+    267 PUSHINT
+    EQUAL
+    136 THROWIFNOT
+    DUP
+    11 PLDU
+    DUP
+    1279 PUSHINT
+    EQUAL
+    137 THROWIF
+    10 PUSHPOW2
+    EQUAL
+    136 THROWIFNOT
+  }>
+  __tact_load_address PROCINLINE:<{
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+  }>
+  __tact_store_address PROCINLINE:<{
+    __tact_verify_address INLINECALLDICT
+    STSLICER
+  }>
+  __tact_my_balance PROCINLINE:<{
+    BALANCE
+    FIRST
+  }>
+  __tact_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+  }>
+  __tact_context_get PROCINLINE:<{
+    __tact_context GETGLOB
+    4 UNTUPLE
+  }>
+  __tact_context_get_sender PROCINLINE:<{
+    __tact_context_sender GETGLOB
+  }>
+  __tact_store_bool PROCINLINE:<{
+    SWAP
+    1 STI
+  }>
+  __tact_dict_set_int_cell PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      -ROT
+      DICTIDEL
+      DROP
+    }>ELSE<{
+      s1 s3 s3 XCHG3
+      DICTISETREF
+    }>
+  }>
+  __tact_dict_get_int_cell PROCINLINE:<{
+    -ROT
+    DICTIGETREF
+    NULLSWAPIFNOT
+    IF:<{
+    }>ELSE<{
+      DROP
+      PUSHNULL
+    }>
+  }>
+  $Deploy$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    2490013878 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    SWAP
+  }>
+  $DeployOk$_store PROCINLINE:<{
+    2952335191 PUSHINT
+    ROT
+    32 STU
+    64 STU
+  }>
+  $DeployOk$_store_cell PROCINLINE:<{
+    NEWC
+    SWAP
+    $DeployOk$_store INLINECALLDICT
+    ENDC
+  }>
+  $LicenseCreate$_load PROCREF:<{
+    32 LDU
+    SWAP
+    1383533862 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    DROP
+    CTOS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDGRAMS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    DROP
+    CTOS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    DROP
+    CTOS
+    s9 s15 XCHG
+    s9 s14 XCHG
+    s9 s13 XCHG
+    s9 s12 XCHG
+    s9 s11 XCHG
+    s9 s10 XCHG
+  }>
+  $License$_store PROCREF:<{
+    s14 s15 XCHG2
+    64 STU
+    s0 s12 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s10 XCHG2
+    __tact_store_address INLINECALLDICT
+    NEWC
+    s0 s9 XCHG2
+    STSLICER
+    ENDC
+    s0 s8 XCHG2
+    STREF
+    NEWC
+    s0 s7 XCHG2
+    STSLICER
+    ENDC
+    s0 s6 XCHG2
+    STREF
+    NEWC
+    s0 s5 XCHG2
+    STSLICER
+    ENDC
+    s0 s4 XCHG2
+    STREF
+    NEWC
+    NEWC
+    s0 s4 XCHG2
+    STSLICER
+    ENDC
+    s0 s3 XCHG2
+    STREF
+    NEWC
+    ROT
+    STSLICER
+    ENDC
+    SWAP
+    STREF
+    NEWC
+    s0 s3 XCHG2
+    STSLICER
+    ENDC
+    ROT
+    STREF
+    NEWC
+    NEWC
+    s0 s4 XCHG2
+    STSLICER
+    ENDC
+    s0 s3 XCHG2
+    STREF
+    s0 s3 XCHG2
+    STGRAMS
+    NEWC
+    s0 s4 XCHG2
+    STSLICER
+    ENDC
+    s0 s3 XCHG2
+    STREF
+    NEWC
+    s0 s4 XCHG2
+    STSLICER
+    ENDC
+    s0 s3 XCHG2
+    STREF
+    NEWC
+    NEWC
+    s0 s5 XCHG2
+    STSLICER
+    ENDC
+    s0 s4 XCHG2
+    STREF
+    NEWC
+    s0 s5 XCHG2
+    STSLICER
+    ENDC
+    s0 s4 XCHG2
+    STREF
+    ENDC
+    ROT
+    STREF
+    ENDC
+    ROT
+    STREF
+    ENDC
+    SWAP
+    STREF
+  }>
+  $License$_store_cell PROCINLINE:<{
+    NEWC
+    15 -ROLL
+    $License$_store INLINECALLDICT
+    ENDC
+  }>
+  $License$_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+    15 UNTUPLE
+  }>
+  $License$_store_opt PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      PUSHNULL
+    }>ELSE<{
+      $License$_not_null INLINECALLDICT
+      $License$_store_cell INLINECALLDICT
+    }>
+  }>
+  $License$_load PROCREF:<{
+    64 LDU
+    __tact_load_address INLINECALLDICT
+    SWAP
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    DROP
+    CTOS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDGRAMS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    DROP
+    CTOS
+    LDREF
+    SWAP
+    CTOS
+    SWAP
+    LDREF
+    DROP
+    CTOS
+    s9 s15 XCHG
+    s9 s14 XCHG
+    s9 s13 XCHG
+    s9 s12 XCHG
+    s9 s11 XCHG
+    s9 s10 XCHG
+  }>
+  $License$_as_optional PROCINLINE:<{
+    15 TUPLE
+  }>
+  $License$_load_opt PROCINLINE:<{
+    DUP
+    ISNULL
+    IF:<{
+      DROP
+      PUSHNULL
+    }>ELSE<{
+      CTOS
+      $License$_load INLINECALLDICT
+      1 15 BLKDROP2
+      $License$_as_optional INLINECALLDICT
+    }>
+  }>
+  $LicenseArray$_store PROCINLINE:<{
+    s0 s2 XCHG
+    STDICT
+    64 STU
+  }>
+  $LicenseArray$_load PROCINLINE:<{
+    LDDICT
+    64 LDU
+    -ROT
+  }>
+  $LicenseDelete$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    1192671483 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    SWAP
+  }>
+  $StatusChange$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    501037069 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    64 LDU
+    LDREF
+    SWAP
+    CTOS
+    s1 s2 XCHG
+  }>
+  $Main$_store PROCINLINE:<{
+    s2 s3 XCHG2
+    32 STU
+    s0 s2 XCHG
+    $LicenseArray$_store INLINECALLDICT
+  }>
+  $Main$_load PROCINLINE:<{
+    32 LDU
+    $LicenseArray$_load INLINECALLDICT
+    s2 s3 XCHG
+  }>
+  $StateInit$_not_null PROCINLINE:<{
+    DUP
+    ISNULL
+    128 THROWIF
+    2 UNTUPLE
+  }>
+  $License$_to_external PROCINLINE:<{
+  }>
+  $LicenseArray$_to_external PROCINLINE:<{
+  }>
+  $Main$init$_load PROCINLINE:<{
+    257 PUSHINT
+    LDIX
+    SWAP
+  }>
+  $LicenseArray$_constructor_map PROCINLINE:<{
+    0 PUSHINT
+  }>
+  $Main$_contract_init PROCREF:<{
+    PUSHNULL
+    $LicenseArray$_constructor_map INLINECALLDICT
+  }>
+  $Main$_contract_load PROCREF:<{
+    c4 PUSH
+    CTOS
+    LDREF
+    SWAP
+    __tact_context_sys SETGLOB
+    1 LDI
+    SWAP
+    IFJMP:<{
+      $Main$_load INLINECALLDICT
+      1 3 BLKDROP2
+    }>
+    MYADDR
+    11 PLDU
+    10 PUSHPOW2
+    EQUAL
+    137 THROWIFNOT
+    $Main$init$_load INLINECALLDICT
+    SWAP
+    ENDS
+    $Main$_contract_init INLINECALLDICT
+  }>
+  $Main$_contract_store PROCINLINE:<{
+    NEWC
+    __tact_context_sys GETGLOB
+    SWAP
+    STREF
+    TRUE
+    SWAP
+    1 STI
+    3 -ROLL
+    $Main$_store INLINECALLDICT
+    ENDC
+    c4 POP
+  }>
+  $global_send PROCREF:<{
+    NEWC
+    1 PUSHINT
+    SWAP
+    2 STI
+    s0 s7 XCHG2
+    __tact_store_bool INLINECALLDICT
+    0 PUSHINT
+    SWAP
+    3 STI
+    s0 s5 XCHG2
+    __tact_store_address INLINECALLDICT
+    s0 s3 XCHG2
+    STGRAMS
+    0 PUSHINT
+    SWAP
+    105 STI
+    s3 PUSH
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+    }>ELSE<{
+      s4 PUSH
+      ISNULL
+      NOT
+    }>
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      NEWC
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      s4 PUSH
+      ISNULL
+      NOT
+      IF:<{
+        TRUE
+        __tact_store_bool INLINECALLDICT
+        s0 s4 XCHG
+        __tact_not_null INLINECALLDICT
+        s0 s4 XCHG2
+        STREF
+      }>ELSE<{
+        s4 POP
+        s0 s3 XCHG
+        FALSE
+        __tact_store_bool INLINECALLDICT
+      }>
+      FALSE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      s0 s2 XCHG
+      ENDC
+      ROT
+      STREF
+    }>ELSE<{
+      s3 POP
+      s3 POP
+      SWAP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    OVER
+    ISNULL
+    NOT
+    IF:<{
+      TRUE
+      __tact_store_bool INLINECALLDICT
+      SWAP
+      __tact_not_null INLINECALLDICT
+      SWAP
+      STREF
+    }>ELSE<{
+      NIP
+      FALSE
+      __tact_store_bool INLINECALLDICT
+    }>
+    ENDC
+    SWAP
+    SENDRAWMSG
+  }>
+  $Main$_fun_arrayOfLicenses PROCREF:<{
+    2DUP
+  }>
+  $Main$_fun_License PROCREF:<{
+    257 PUSHINT
+    s3 PUSH
+    s0 s2 XCHG
+    __tact_dict_get_int_cell INLINECALLDICT
+    $License$_load_opt INLINECALLDICT
+    $License$_not_null INLINECALLDICT
+  }>
+  $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
+  }>
+  $Main$_fun_forward PROCREF:<{
+    PUSHNULL
+    PUSHNULL
+    s2 PUSH
+    ISNULL
+    NOT
+    IF:<{
+      2DROP
+      $StateInit$_not_null INLINECALLDICT
+      SWAP
+    }>ELSE<{
+      s2 POP
+    }>
+    s2 s4 XCHG
+    0 PUSHINT
+    s0 s3 XCHG
+    s0 s4 XCHG
+    66 PUSHINT
+    s2 s3 XCHG2
+    $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  $Main$_fun_notify PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    SWAP
+    FALSE
+    PUSHNULL
+    $Main$_fun_forward INLINECALLDICT
+  }>
+  $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status PROCINLINE:<{
+  }>
+  $DeployOk$_constructor_queryId PROCINLINE:<{
+  }>
+  $Main$_internal_binary_LicenseCreate PROCINLINE:<{
+    s14 PUSH
+    14 -ROLL
+    $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status INLINECALLDICT
+    14 -ROLL
+    257 PUSHINT
+    s0 s15 XCHG
+    $License$_store_cell INLINECALLDICT
+    s3 s4 XCHG
+    s1 s2 XCHG
+    __tact_dict_set_int_cell INLINECALLDICT
+    SWAP
+    INC
+  }>
+  $Main$_internal_binary_LicenseDelete PROCINLINE:<{
+    257 PUSHINT
+    PUSHNULL
+    $License$_store_opt INLINECALLDICT
+    s3 s4 XCHG
+    s1 s2 XCHG
+    __tact_dict_set_int_cell INLINECALLDICT
+    SWAP
+    DEC
+  }>
+  $Main$_internal_binary_StatusChange PROCINLINE:<{
+    s3 PUSH
+    257 PUSHINT
+    s3 PUSH
+    __tact_dict_get_int_cell INLINECALLDICT
+    $License$_load_opt INLINECALLDICT
+    $License$_not_null INLINECALLDICT
+    DROP
+    257 PUSHINT
+    PUSHNULL
+    $License$_store_opt INLINECALLDICT
+    s2 19 s() XCHG
+    17 s() PUSH
+    SWAP
+    __tact_dict_set_int_cell INLINECALLDICT
+    s0 17 s() XCHG
+    257 PUSHINT
+    s0 s15 XCHG
+    $License$_store_cell INLINECALLDICT
+    s3 s4 XCHG
+    s1 s2 XCHG
+    __tact_dict_set_int_cell INLINECALLDICT
+    SWAP
+  }>
+  $Main$_internal_binary_Deploy PROCINLINE:<{
+    $DeployOk$_constructor_queryId INLINECALLDICT
+    $DeployOk$_store_cell INLINECALLDICT
+    $Main$_fun_notify INLINECALLDICT
+  }>
+  %arrayOfLicenses PROC:<{
+    $Main$_contract_load INLINECALLDICT
+    $Main$_fun_arrayOfLicenses INLINECALLDICT
+    3 2 BLKDROP2
+    $LicenseArray$_to_external INLINECALLDICT
+  }>
+  %License PROC:<{
+    $Main$_contract_load INLINECALLDICT
+    3 ROLL
+    $Main$_fun_License INLINECALLDICT
+    3 15 BLKDROP2
+    $License$_to_external INLINECALLDICT
+  }>
+  supported_interfaces PROC:<{
+    123515602279859691144772641439386770278 PUSHINT
+    209801025412363888721030803524359905849 PUSHINT
+    42980537499636128163026532310500881091 PUSHINT
+    209474421377847335869795010607481022628 PUSHINT
+  }>
+  get_abi_ipfs PROC:<{
+    x{697066733a2f2f516d643632415861364d58354a52373834714d325947435746456f36716d51724d7570326168384669344b6f7662} PUSHSLICE
+  }>
+  lazy_deployment_completed PROC:<{
+    c4 PUSH
+    CTOS
+    1 LDI
+    SWAP
+  }>
+  $Main$_contract_router_internal PROCREF:<{
+    SWAP
+    IFJMP:<{
+      DROP
+      TRUE
+    }>
+    0 PUSHINT
+    OVER
+    SBITS
+    31 GTINT
+    IF:<{
+      DROP
+      DUP
+      32 PLDU
+    }>
+    DUP
+    1383533862 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $LicenseCreate$_load INLINECALLDICT
+      1 15 BLKDROP2
+      $Main$_internal_binary_LicenseCreate INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    1192671483 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $LicenseDelete$_load INLINECALLDICT
+      NIP
+      $Main$_internal_binary_LicenseDelete INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    501037069 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $StatusChange$_load INLINECALLDICT
+      1 2 BLKDROP2
+      $Main$_internal_binary_StatusChange INLINECALLDICT
+      TRUE
+    }>
+    2490013878 PUSHINT
+    EQUAL
+    IFJMP:<{
+      $Deploy$_load INLINECALLDICT
+      NIP
+      $Main$_internal_binary_Deploy INLINECALLDICT
+      TRUE
+    }>
+    DROP
+    FALSE
+  }>
+  recv_internal PROC:<{
+    SWAP
+    CTOS
+    4 LDU
+    SWAP
+    1 PUSHINT
+    AND
+    NEGATE
+    SWAP
+    LDMSGADDR
+    SWAP
+    __tact_verify_address INLINECALLDICT
+    s0 s4 s2 PUXCPU
+    s0 s3 XCHG
+    4 TUPLE
+    __tact_context SETGLOB
+    s0 s2 XCHG
+    __tact_context_sender SETGLOB
+    $Main$_contract_load INLINECALLDICT
+    2 3 BLKSWAP
+    $Main$_contract_router_internal INLINECALLDICT
+    130 THROWIFNOT
+    $Main$_contract_store INLINECALLDICT
+  }>
+}END>c
