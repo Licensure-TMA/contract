@@ -12,12 +12,14 @@ jobs:
     - name: Checkout source repository
       uses: actions/checkout@v3
       with:
+        repository: Licensure-TMA/contract-manager
         path: source-repo
 
     - name: Checkout destination repository
       uses: actions/checkout@v3
       with:
         repository: Licensure-TMA/frontend
+        token: ${{ secrets.GITHUB_TOKEN }}
         path: destination-repo
 
     - name: Sync folders
@@ -37,7 +39,8 @@ jobs:
 
     - name: Give permission to GITHUB_TOKEN
       run: |
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        cd destination-repo
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Licensure-TMA/frontend.git
 
     - name: Push changes
       uses: ad-m/github-push-action@master
