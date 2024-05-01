@@ -44,4 +44,3 @@ jobs:
         directory: destination-repo
         repository: Licensure-TMA/frontend
         branch: main
-        
