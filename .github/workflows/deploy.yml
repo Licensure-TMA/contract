@@ -31,7 +31,7 @@ jobs:
 
     - name: Modify tact_Main.ts file
       run: |
-        sed -i 's/} from '"'"'@ton\/core'"'"';/from '"'"'ton-core'"'"';/g' destination-repo/licensure-app/build/Main/tact_Main.ts
+        sed -i 's/} from '"'"'@ton\/core'"'"';/} from '"'"'ton-core'"'"';/g' destination-repo/licensure-app/build/Main/tact_Main.ts
 
     - name: Commit changes
       run: |
