@@ -37,11 +37,6 @@ jobs:
         git add licensure-app/wrappers licensure-app/build
         git commit -m "Sync folders from source repository"
 
-    - name: Give permission to GITHUB_TOKEN
-      run: |
-        cd destination-repo
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Licensure-TMA/frontend.git
-
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
@@ -49,3 +44,5 @@ jobs:
         directory: destination-repo
         repository: Licensure-TMA/frontend
         branch: main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
