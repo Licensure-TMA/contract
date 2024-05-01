@@ -29,6 +29,10 @@ jobs:
         cp -r source-repo/LicenseContract/wrappers/* destination-repo/licensure-app/wrappers/
         cp -r source-repo/LicenseContract/build/* destination-repo/licensure-app/build/
 
+    - name: Modify tact_Main.ts file
+      run: |
+        sed -i 's/} from '"'"'@ton\/core'"'"';/from '"'"'ton-core'"'"';/g' destination-repo/licensure-app/build/Main/tact_Main.ts
+
     - name: Commit changes
       run: |
         cd destination-repo
@@ -44,4 +48,3 @@ jobs:
         directory: destination-repo
         repository: Licensure-TMA/frontend
         branch: main
-        
