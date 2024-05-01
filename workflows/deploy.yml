@@ -1,0 +1,44 @@
+name: Sync Folders
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  sync-folders:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source repository
+      uses: actions/checkout@v3
+      with:
+        path: source-repo
+
+    - name: Checkout destination repository
+      uses: actions/checkout@v3
+      with:
+        repository: Licensure-TMA/frontend
+        path: destination-repo
+
+    - name: Sync folders
+      run: |
+        rm -rf destination-repo/licensure-app/wrappers/*
+        rm -rf destination-repo/licensure-app/build/*
+        cp -r source-repo/LicenseContract/wrappers/* destination-repo/licensure-app/wrappers/
+        cp -r source-repo/LicenseContract/build/* destination-repo/licensure-app/build/
+
+    - name: Commit changes
+      run: |
+        cd destination-repo
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add licensure-app/wrappers licensure-app/build
+        git commit -m "Sync folders from source repository"
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        directory: destination-repo
+        repository: Licensure-TMA/frontend
+        branch: main
