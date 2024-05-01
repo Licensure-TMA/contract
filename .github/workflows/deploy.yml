@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: Licensure-TMA/frontend
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.ACCESS_TOKEN }}
         path: destination-repo
 
     - name: Sync folders
@@ -40,9 +40,7 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.ACCESS_TOKEN }}
         directory: destination-repo
         repository: Licensure-TMA/frontend
         branch: main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
