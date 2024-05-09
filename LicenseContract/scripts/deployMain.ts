@@ -3,7 +3,7 @@ import { Main } from '../wrappers/Main';
 import { NetworkProvider } from '@ton/blueprint';
 
 export async function run(provider: NetworkProvider) {
-    const main = provider.open(await Main.fromInit(1951651n));
+    const main = provider.open(await Main.fromInit(11651n));
 
     await main.send(
         provider.sender(),
@@ -17,6 +17,4 @@ export async function run(provider: NetworkProvider) {
     );
 
     await provider.waitForDeploy(main.address);
-
-    // run methods on `main`
 }

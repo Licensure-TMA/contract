@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: Main
-BOC Size: 1453 bytes
+BOC Size: 1693 bytes
 
 # Types
 Total Types: 11
@@ -30,32 +30,35 @@ TLB: `factory_deploy#6d0ff13b queryId:uint64 cashback:address = FactoryDeploy`
 Signature: `FactoryDeploy{queryId:uint64,cashback:address}`
 
 ## LicenseCreate
-TLB: `license_create#52770d26 licenseId:uint64 sellerAddress:address buyerAddress:address createdAt:^string contentName:^string contentDescription:^string contentUrls:^string licenseType:^string contentCategory:^string contentSubcategory:^string price:coins currency:^string allRestrictions:^string additionalTerms:^string status:^string = LicenseCreate`
-Signature: `LicenseCreate{licenseId:uint64,sellerAddress:address,buyerAddress:address,createdAt:^string,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}`
+TLB: `license_create#94c07f2b sellerAddress:address contentName:^string contentDescription:^string contentUrls:^string licenseType:^string contentCategory:^string contentSubcategory:^string price:coins allRestrictions:^string additionalTerms:^string = LicenseCreate`
+Signature: `LicenseCreate{sellerAddress:address,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,allRestrictions:^string,additionalTerms:^string}`
 
 ## License
-TLB: `_ licenseId:uint64 sellerAddress:address buyerAddress:address createdAt:^string contentName:^string contentDescription:^string contentUrls:^string licenseType:^string contentCategory:^string contentSubcategory:^string price:coins currency:^string allRestrictions:^string additionalTerms:^string status:^string = License`
-Signature: `License{licenseId:uint64,sellerAddress:address,buyerAddress:address,createdAt:^string,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}`
+TLB: `_ licenseId:int257 sellerAddress:address buyerAddress:address createdAt:uint32 contentName:^string contentDescription:^string contentUrls:^string licenseType:^string contentCategory:^string contentSubcategory:^string price:coins currency:^string allRestrictions:^string additionalTerms:^string status:^string = License`
+Signature: `License{licenseId:int257,sellerAddress:address,buyerAddress:address,createdAt:uint32,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}`
 
 ## LicenseArray
-TLB: `_ map:dict<int, ^License{licenseId:uint64,sellerAddress:address,buyerAddress:address,createdAt:^string,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}> length:uint64 = LicenseArray`
-Signature: `LicenseArray{map:dict<int, ^License{licenseId:uint64,sellerAddress:address,buyerAddress:address,createdAt:^string,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}>,length:uint64}`
+TLB: `_ map:dict<int, ^License{licenseId:int257,sellerAddress:address,buyerAddress:address,createdAt:uint32,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}> length:uint64 = LicenseArray`
+Signature: `LicenseArray{map:dict<int, ^License{licenseId:int257,sellerAddress:address,buyerAddress:address,createdAt:uint32,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}>,length:uint64}`
 
 ## LicenseDelete
-TLB: `license_delete#4716b8fb licenseId:uint64 = LicenseDelete`
-Signature: `LicenseDelete{licenseId:uint64}`
+TLB: `license_delete#8247b269 licenseId:int257 = LicenseDelete`
+Signature: `LicenseDelete{licenseId:int257}`
 
-## StatusChange
-TLB: `status_change#1ddd380d licenseId:uint64 newStatus:^string = StatusChange`
-Signature: `StatusChange{licenseId:uint64,newStatus:^string}`
+## LicenseBuy
+TLB: `license_buy#a922d63a licenseId:int257 newStatus:^string buyerAddress:address = LicenseBuy`
+Signature: `LicenseBuy{licenseId:int257,newStatus:^string,buyerAddress:address}`
 
 # Get Methods
-Total Get Methods: 2
+Total Get Methods: 3
 
 ## arrayOfLicenses
 
-## License
+## oneLicensebyId
 Argument: licenseId
+
+## LicenseIdbySellerAddress
+Argument: sellerAddress
 
 # Error Codes
 2: Stack undeflow

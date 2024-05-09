@@ -20,6 +20,16 @@ builder __tact_store_address(builder b, slice address) inline {
     return b.store_slice(__tact_verify_address(address));
 }
 
+slice __tact_create_address(int chain, int hash) inline {
+    var b = begin_cell();
+    b = b.store_uint(2, 2);
+    b = b.store_uint(0, 1);
+    b = b.store_int(chain, 8);
+    b = b.store_uint(hash, 256);
+    var addr = b.end_cell().begin_parse();
+    return __tact_verify_address(addr);
+}
+
 int __tact_my_balance() inline {
     return pair_first(get_balance());
 }
@@ -27,6 +37,10 @@ int __tact_my_balance() inline {
 forall X -> X __tact_not_null(X x) inline {
     throw_if(128, null?(x)); return x;
 }
+
+(cell, int) __tact_dict_delete(cell dict, int key_len, slice index) asm(index dict key_len) "DICTDEL";
+
+(slice, int) __tact_dict_get(cell dict, int key_len, slice index) asm(index dict key_len) "DICTGET" "NULLSWAPIFNOT";
 
 (int, slice, int, slice) __tact_context_get() inline {
     return __tact_context;
@@ -53,6 +67,24 @@ cell __tact_dict_get_int_cell(cell d, int kl, int k) inline {
     var (r, ok) = idict_get_ref?(d, kl, k);
     if (ok) {
         return r;
+    } else {
+        return null();
+    }
+}
+
+(cell, ()) __tact_dict_set_slice_int(cell d, int kl, slice k, int v, int vl) inline {
+    if (null?(v)) {
+        var (r, ok) = __tact_dict_delete(d, kl, k);
+        return (r, ());
+    } else {
+        return (dict_set_builder(d, kl, k, begin_cell().store_int(v, vl)), ());
+    }
+}
+
+int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline {
+    var (r, ok) = __tact_dict_get(d, kl, k);
+    if (ok) {
+        return r~load_int(vl);
     } else {
         return null();
     }
@@ -107,8 +139,8 @@ forall X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14 -> (X0, X
     send_raw_message($c, $params'mode);
 }
 
-((int, (cell, int)), ()) $Main$_fun_forward((int, (cell, int)) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
-    var (($self'id, ($self'licenses'map, $self'licenses'length))) = $self;
+((int, (cell, int), cell), ()) $Main$_fun_forward((int, (cell, int), cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
     var ($init) = $init;
     cell $code = null();
     cell $data = null();
@@ -124,15 +156,15 @@ forall X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14 -> (X0, X
         if (($balanceBeforeMessage < 0)) {
             raw_reserve(0, 0);
             $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (128 + 2), $body, $code, $data));
-            return (($self'id, ($self'licenses'map, $self'licenses'length)), ());
+            return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (64 + 2), $body, $code, $data));
-    return (($self'id, ($self'licenses'map, $self'licenses'length)), ());
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
 }
 
-((int, (cell, int)), ()) $Main$_fun_notify((int, (cell, int)) $self, cell $body) impure inline {
-    var (($self'id, ($self'licenses'map, $self'licenses'length))) = $self;
-    ($self'id, ($self'licenses'map, $self'licenses'length))~$Main$_fun_forward(__tact_context_get_sender(), $body, false, null());
-    return (($self'id, ($self'licenses'map, $self'licenses'length)), ());
+((int, (cell, int), cell), ()) $Main$_fun_notify((int, (cell, int), cell) $self, cell $body) impure inline {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
+    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_forward(__tact_context_get_sender(), $body, false, null());
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
 }

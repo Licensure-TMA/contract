@@ -1,10 +1,7 @@
 import "@stdlib/deploy";
 
 message LicenseCreate {
-    licenseId: Int as uint64;
     sellerAddress: Address;
-    buyerAddress: Address;
-    createdAt: String;
     contentName: String;
     contentDescription: String;
     contentUrls: String;
@@ -12,17 +9,15 @@ message LicenseCreate {
     contentCategory: String;
     contentSubcategory: String;
     price: Int as coins;
-    currency: String;
     allRestrictions: String;
     additionalTerms: String;
-    status: String;
 }
 
 struct License {
-    licenseId: Int as uint64;
+    licenseId: Int;
     sellerAddress: Address;
     buyerAddress: Address;
-    createdAt: String;
+    createdAt: Int as uint32;
     contentName: String;
     contentDescription: String;
     contentUrls: String;
@@ -42,29 +37,34 @@ struct LicenseArray {
 }
 
 message LicenseDelete {
-    licenseId: Int as uint64;
+    licenseId: Int;
 }
 
-message StatusChange {
-    licenseId: Int as uint64;
+message LicenseBuy {
+    licenseId: Int;
     newStatus: String;
+    buyerAddress: Address;
 }
 
 contract Main with Deployable {
     id: Int as uint32;
     licenses: LicenseArray;
+    pairs: map<Address, Int>;
 
     init(id: Int) {
         self.id = id;
         self.licenses = LicenseArray{map: emptyMap()};
+        self.pairs = emptyMap();
     }
 
     receive(msg: LicenseCreate) {
+        let licenseId: Int = sha256(msg.contentDescription);
+
         let license: License = License {
-            licenseId: msg.licenseId,
+            licenseId: licenseId,
             sellerAddress: msg.sellerAddress,
-            buyerAddress: msg.buyerAddress,
-            createdAt: msg.createdAt,
+            buyerAddress: newAddress(0, 0),
+            createdAt: now(),
             contentName: msg.contentName,
             contentDescription: msg.contentDescription,
             contentUrls: msg.contentUrls,
@@ -72,14 +72,17 @@ contract Main with Deployable {
             contentCategory: msg.contentCategory,
             contentSubcategory: msg.contentSubcategory,
             price: msg.price,
-            currency: msg.currency,
+            currency: "TON",
             allRestrictions: msg.allRestrictions,
             additionalTerms: msg.additionalTerms,
-            status: msg.status
+            status: "Pending"
         };
 
-        self.licenses.map.set(msg.licenseId, license);
+        self.licenses.map.set(licenseId, license);
         self.licenses.length = self.licenses.length + 1;
+
+        self.pairs.set(msg.sellerAddress, null);
+        self.pairs.set(msg.sellerAddress, licenseId);
     }
 
     receive(msg: LicenseDelete) {
@@ -87,9 +90,10 @@ contract Main with Deployable {
         self.licenses.length = self.licenses.length - 1;
     }
 
-    receive(msg: StatusChange) {
+    receive(msg: LicenseBuy) {
         let license: License = self.licenses.map.get(msg.licenseId)!!;
         license.status = msg.newStatus;
+        license.buyerAddress = msg.buyerAddress;
         self.licenses.map.set(msg.licenseId, null);
         self.licenses.map.set(msg.licenseId, license);
     }
@@ -98,8 +102,12 @@ contract Main with Deployable {
         return self.licenses;
     }
 
-    get fun License(licenseId: Int): License {
+    get fun oneLicensebyId(licenseId: Int): License {
         let license: License = self.licenses.map.get(licenseId)!!;
         return license;
+    }
+
+    get fun LicenseIdbySellerAddress(sellerAddress: Address): Int {
+        return self.pairs.get(sellerAddress)!!;
     }
 }
