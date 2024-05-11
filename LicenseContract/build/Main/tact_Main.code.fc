@@ -59,11 +59,11 @@
     return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
 }
 
-(((int, (cell, int), cell)), ()) $Main$_internal_binary_LicenseBuy((int, (cell, int), cell) $self, (int, slice, slice) $msg) impure inline {
+(((int, (cell, int), cell)), ()) $Main$_internal_binary_LicenseBuy((int, (cell, int), cell) $self, (int, slice) $msg) impure inline {
     var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs) = $self;
-    var ($msg'licenseId, $msg'newStatus, $msg'buyerAddress) = $msg;
+    var ($msg'licenseId, $msg'buyerAddress) = $msg;
     var ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status) = $License$_not_null($License$_load_opt(__tact_dict_get_int_cell($self'licenses'map, 257, $msg'licenseId)));
-    $license'status = $msg'newStatus;
+    $license'status = __gen_slice_string_84916524b9e8f10533f5cd9c2855ca81c0bb05fc84dcec43114cb12cc47300c5();
     $license'buyerAddress = $msg'buyerAddress;
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_opt(null()));
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_cell(($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status)));
@@ -111,7 +111,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmVctfduqJM5U56gWSxVZBorW1UXahSJnR8CWPqW66A5DZ";
+    return "ipfs://Qmf92NE5dStFSWgbkeHcCH2u7S19sPPH8bYoL64EZdw57X";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -150,7 +150,7 @@ _ lazy_deployment_completed() method_id {
     }
     
     ;; Receive LicenseBuy message
-    if (op == 2837632570) {
+    if (op == 2252110203) {
         var msg = in_msg~$LicenseBuy$_load();
         self~$Main$_internal_binary_LicenseBuy(msg);
         return (self, true);

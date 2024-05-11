@@ -3,7 +3,7 @@ import { Main } from '../wrappers/Main';
 import { NetworkProvider } from '@ton/blueprint';
 
 export async function run(provider: NetworkProvider) {
-    const main = provider.open(await Main.fromInit(11651n));
+    const main = provider.open(await Main.fromInit(111112651n));
 
     await main.send(
         provider.sender(),
@@ -14,7 +14,7 @@ export async function run(provider: NetworkProvider) {
             $$type: 'LicenseCreate',
             sellerAddress: address("EQBGhqLAZseEqRXz4ByFPTGV7SVMlI4hrbs-Sps_Xzx01x8G"),
             contentName: 'Videos with cats',
-            contentDescription: "super",
+            contentDescription: "super!!",
             contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
             licenseType: "Restricted license",
             contentCategory: "Video",

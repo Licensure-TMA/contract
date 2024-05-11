@@ -42,7 +42,6 @@ message LicenseDelete {
 
 message LicenseBuy {
     licenseId: Int;
-    newStatus: String;
     buyerAddress: Address;
 }
 
@@ -92,7 +91,7 @@ contract Main with Deployable {
 
     receive(msg: LicenseBuy) {
         let license: License = self.licenses.map.get(msg.licenseId)!!;
-        license.status = msg.newStatus;
+        license.status = "Paid";
         license.buyerAddress = msg.buyerAddress;
         self.licenses.map.set(msg.licenseId, null);
         self.licenses.map.set(msg.licenseId, license);

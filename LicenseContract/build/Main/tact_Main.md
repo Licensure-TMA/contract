@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: Main
-BOC Size: 1693 bytes
+BOC Size: 1670 bytes
 
 # Types
 Total Types: 11
@@ -46,8 +46,8 @@ TLB: `license_delete#8247b269 licenseId:int257 = LicenseDelete`
 Signature: `LicenseDelete{licenseId:int257}`
 
 ## LicenseBuy
-TLB: `license_buy#a922d63a licenseId:int257 newStatus:^string buyerAddress:address = LicenseBuy`
-Signature: `LicenseBuy{licenseId:int257,newStatus:^string,buyerAddress:address}`
+TLB: `license_buy#863c797b licenseId:int257 buyerAddress:address = LicenseBuy`
+Signature: `LicenseBuy{licenseId:int257,buyerAddress:address}`
 
 # Get Methods
 Total Get Methods: 3

@@ -85,7 +85,7 @@ builder $LicenseArray$_store(builder build_0, (cell, int) v) inline;
 (slice, ((int))) $LicenseDelete$_load(slice sc_0) inline;
 
 ;; $LicenseBuy$_load
-(slice, ((int, slice, slice))) $LicenseBuy$_load(slice sc_0) inline;
+(slice, ((int, slice))) $LicenseBuy$_load(slice sc_0) inline;
 
 ;; $Main$_store
 builder $Main$_store(builder build_0, (int, (cell, int), cell) v) inline;
