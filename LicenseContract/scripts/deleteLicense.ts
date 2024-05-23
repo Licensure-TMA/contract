@@ -3,7 +3,7 @@ import { Main } from '../wrappers/Main';
 import { NetworkProvider } from '@ton/blueprint';
 
 export async function run(provider: NetworkProvider) {
-    const main = provider.open(await Main.fromInit(111112651n));
+    const main = provider.open(await Main.fromInit(5641654n));
 
     await main.send(
         provider.sender(),
@@ -12,7 +12,7 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'LicenseDelete',
-            licenseId: 33410445618380969054696306686309654449893145225497623448882212089499489n
+            licenseId: 78609805328260369402669540407081073522911550811006507232313126786671296085399n
         }
     );
 }

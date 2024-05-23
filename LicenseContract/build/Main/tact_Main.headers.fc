@@ -42,6 +42,21 @@ cell __tact_dict_get_int_cell(cell d, int kl, int k) inline;
 ;; __tact_dict_get_slice_int
 int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline;
 
+;; __tact_string_builder_start
+tuple __tact_string_builder_start(builder b) inline;
+
+;; __tact_string_builder_start_comment
+tuple __tact_string_builder_start_comment() inline;
+
+;; __tact_string_builder_end
+cell __tact_string_builder_end(tuple builders) inline;
+
+;; __tact_string_builder_append
+((tuple), ()) __tact_string_builder_append(tuple builders, slice sc) inline_ref;
+
+;; __tact_int_to_string
+slice __tact_int_to_string(int src) inline_ref;
+
 ;; $Deploy$_load
 (slice, ((int))) $Deploy$_load(slice sc_0) inline;
 
@@ -120,6 +135,9 @@ builder $Main$_store(builder build_0, (int, (cell, int), cell) v) inline;
 ;; $global_send
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
 
+;; $String$_fun_asComment
+cell $String$_fun_asComment(slice $self) impure inline_ref;
+
 ;; $Main$_fun_arrayOfLicenses
 ((int, (cell, int), cell), (cell, int)) $Main$_fun_arrayOfLicenses((int, (cell, int), cell) $self) impure inline_ref;
 
@@ -135,11 +153,17 @@ builder $Main$_store(builder build_0, (int, (cell, int), cell) v) inline;
 ;; $Main$_fun_forward
 ((int, (cell, int), cell), ()) $Main$_fun_forward((int, (cell, int), cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
+;; $Main$_fun_reply
+((int, (cell, int), cell), ()) $Main$_fun_reply((int, (cell, int), cell) $self, cell $body) impure inline;
+
 ;; $Main$_fun_notify
 ((int, (cell, int), cell), ()) $Main$_fun_notify((int, (cell, int), cell) $self, cell $body) impure inline;
 
 ;; $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status
 ((int, slice, slice, int, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice)) $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status(int licenseId, slice sellerAddress, slice buyerAddress, int createdAt, slice contentName, slice contentDescription, slice contentUrls, slice licenseType, slice contentCategory, slice contentSubcategory, int price, slice currency, slice allRestrictions, slice additionalTerms, slice status) inline;
+
+;; $SendParameters$_constructor_to_value_mode_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice to, int value, int mode, cell body) inline;
 
 ;; $DeployOk$_constructor_queryId
 ((int)) $DeployOk$_constructor_queryId(int queryId) inline;

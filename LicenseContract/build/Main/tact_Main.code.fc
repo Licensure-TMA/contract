@@ -42,12 +42,13 @@
 (((int, (cell, int), cell)), ()) $Main$_internal_binary_LicenseCreate((int, (cell, int), cell) $self, (slice, slice, slice, slice, slice, slice, slice, int, slice, slice) $msg) impure inline {
     var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs) = $self;
     var ($msg'sellerAddress, $msg'contentName, $msg'contentDescription, $msg'contentUrls, $msg'licenseType, $msg'contentCategory, $msg'contentSubcategory, $msg'price, $msg'allRestrictions, $msg'additionalTerms) = $msg;
-    int $licenseId = string_hash($msg'contentDescription);
+    int $licenseId = (string_hash($msg'contentDescription) / 100000000000000000000000000000000000);
     var ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status) = $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status($licenseId, $msg'sellerAddress, __tact_create_address(0, 0), now(), $msg'contentName, $msg'contentDescription, $msg'contentUrls, $msg'licenseType, $msg'contentCategory, $msg'contentSubcategory, $msg'price, __gen_slice_string_7f23a419b837f87cb02beed6e36d91ee847b2ebce01b9ef5a02df2baf4c081a1(), $msg'allRestrictions, $msg'additionalTerms, __gen_slice_string_4ecaf18c39fa13cb82f1fc3ed343fe15bcf6a0c9df909679d7646463211f410c());
     $self'licenses'map~__tact_dict_set_int_cell(257, $licenseId, $License$_store_cell(($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status)));
     $self'licenses'length = ($self'licenses'length + 1);
     $self'pairs~__tact_dict_set_slice_int(267, $msg'sellerAddress, null(), 257);
     $self'pairs~__tact_dict_set_slice_int(267, $msg'sellerAddress, $licenseId, 257);
+    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_reply($String$_fun_asComment(__tact_int_to_string($licenseId)));
     return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
 }
 
@@ -56,6 +57,7 @@
     var ($msg'licenseId) = $msg;
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_opt(null()));
     $self'licenses'length = ($self'licenses'length - 1);
+    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_reply(__gen_cell_comment_dbe1c797d6d2d914c463173b1da531103d2efe747471212d1fad170fcf0c75d2());
     return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
 }
 
@@ -67,6 +69,7 @@
     $license'buyerAddress = $msg'buyerAddress;
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_opt(null()));
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_cell(($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status)));
+    $global_send($SendParameters$_constructor_to_value_mode_body(__tact_context_get_sender(), 0, 128, __gen_cell_comment_7d5de4b320891379f1fc7f718dd7a10de03f18bc98a42ead8f20a06524866d50()));
     return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
 }
 

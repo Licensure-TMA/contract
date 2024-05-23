@@ -57,7 +57,7 @@ contract Main with Deployable {
     }
 
     receive(msg: LicenseCreate) {
-        let licenseId: Int = sha256(msg.contentDescription);
+        let licenseId: Int = sha256(msg.contentDescription) / pow(10, 35); //появляется проблема при приведении типа, если число 256 битное
 
         let license: License = License {
             licenseId: licenseId,
@@ -82,11 +82,14 @@ contract Main with Deployable {
 
         self.pairs.set(msg.sellerAddress, null);
         self.pairs.set(msg.sellerAddress, licenseId);
+
+        self.reply(licenseId.toString().asComment());
     }
 
     receive(msg: LicenseDelete) {
         self.licenses.map.set(msg.licenseId, null);
         self.licenses.length = self.licenses.length - 1;
+        self.reply("OK".asComment());
     }
 
     receive(msg: LicenseBuy) {
@@ -95,6 +98,14 @@ contract Main with Deployable {
         license.buyerAddress = msg.buyerAddress;
         self.licenses.map.set(msg.licenseId, null);
         self.licenses.map.set(msg.licenseId, license);
+        //self.reply("OK".asComment());
+
+        send(SendParameters{
+            to: sender(), // send the message back to the original sender
+            value: 0,
+            mode: SendRemainingBalance, // or mode: 128
+            body: "Hello from Tact!".asComment() // comment (optional)
+        });
     }
 
     get fun arrayOfLicenses(): LicenseArray {

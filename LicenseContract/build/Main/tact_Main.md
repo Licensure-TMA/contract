@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: Main
-BOC Size: 1670 bytes
+BOC Size: 2008 bytes
 
 # Types
 Total Types: 11

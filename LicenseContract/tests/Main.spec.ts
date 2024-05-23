@@ -44,7 +44,7 @@ describe('Main', () => {
         console.log("arrayBefore:", arrayBefore.length)
         console.log("arrayBefore:", arrayBefore.map)
 
-        await main.send(
+        const a = await main.send(
             deployer.getSender(),
             {
                 value: toNano('0.05')
@@ -64,6 +64,8 @@ describe('Main', () => {
             }
         )
         
+        console.log(a.transactions[1].outMessages.get(0).body.beginParse().loadStringTail())
+
         const result1 = await main.getLicenseIdbySellerAddress(deployer.address)
         console.log(result1)
 
@@ -179,7 +181,7 @@ describe('Main', () => {
         console.log("arrayBefore:", arrayBefore.length)
         console.log("arrayBefore:", arrayBefore.map)
 
-        await main.send(
+        const test = await main.send(
             deployer.getSender(),
             {
                 value: toNano('0.05')
@@ -189,6 +191,8 @@ describe('Main', () => {
                 licenseId: result1
             }
         )
+        
+        console.log(test.transactions[1].outMessages.get(0)?.body.beginParse().loadStringTail())
 
         const arrayAfter = await main.getArrayOfLicenses()
         console.log("arrayAfter:", arrayAfter.length)
@@ -197,7 +201,7 @@ describe('Main', () => {
         expect(arrayAfter.length).toBeLessThan(arrayBefore.length)
     });
 
-    it('should delete', async () => {
+    it('should buy', async () => {
         await main.send(
             deployer.getSender(),
             {

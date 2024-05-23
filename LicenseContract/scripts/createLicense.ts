@@ -3,7 +3,7 @@ import { Main } from '../wrappers/Main';
 import { NetworkProvider } from '@ton/blueprint';
 
 export async function run(provider: NetworkProvider) {
-    const main = provider.open(await Main.fromInit(111112651n));
+    const main = provider.open(await Main.fromInit(5641654n));
 
     await main.send(
         provider.sender(),
@@ -12,14 +12,14 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'LicenseCreate',
-            sellerAddress: address("EQBGhqLAZseEqRXz4ByFPTGV7SVMlI4hrbs-Sps_Xzx01x8G"),
-            contentName: 'Videos with cats',
-            contentDescription: "super!!",
-            contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
+            sellerAddress: address("EQAokDRDElCtgydnbRoag1uJAKJFU2yAQG8oP69FGjqZFCa-"),
+            contentName: 'Video with cats on YT',
+            contentDescription: "CATS are very amusing; they make us smile and laugh! They are the best! You are usually cheerful when you are among cats and animals!",
+            contentUrls:"1 - https://www.youtube.com/watch?v=IzluNxh-8_o",
             licenseType: "Restricted license",
             contentCategory: "Video",
             contentSubcategory: "Internet video",
-            price: 50n,
+            price: 1n,
             allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
             additionalTerms: ""
         }
