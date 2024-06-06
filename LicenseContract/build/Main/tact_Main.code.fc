@@ -11,78 +11,137 @@
 ;; Contract Main functions
 ;;
 
-(int, (cell, int), cell) $Main$_contract_init(int $id) impure inline_ref {
-    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = (null(), null(), null());
+(int, (cell, int), cell, cell, cell, slice) $Main$_contract_init(int $id) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = (null(), null(), null(), null(), null(), null());
     $self'id = $id;
     ($self'licenses'map, $self'licenses'length) = $LicenseArray$_constructor_map(null());
-    $self'pairs = null();
-    return ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs);
+    $self'pairsUsersCreatedContracts = null();
+    $self'pairsUsersDeletedContracts = null();
+    $self'pairsUsersBoughtContracts = null();
+    $self'deployer = __tact_context_get_sender();
+    return ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer);
 }
 
-((int, (cell, int), cell), (cell, int)) $Main$_fun_arrayOfLicenses((int, (cell, int), cell) $self) impure inline_ref {
-    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ($self'licenses'map, $self'licenses'length));
+((int, (cell, int), cell, cell, cell, slice), slice) $Main$_fun_balance((int, (cell, int), cell, cell, cell, slice) $self) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), $Int$_fun_toCoinsString(__tact_my_balance()));
 }
 
-((int, (cell, int), cell), (int, slice, slice, int, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice)) $Main$_fun_oneLicensebyId((int, (cell, int), cell) $self, int $licenseId) impure inline_ref {
-    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
+((int, (cell, int), cell, cell, cell, slice), int) $Main$_fun_resultOfCreate((int, (cell, int), cell, cell, cell, slice) $self, slice $sellerAddress) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), __tact_not_null(__tact_dict_get_slice_int($self'pairsUsersCreatedContracts, 267, $sellerAddress, 257)));
+}
+
+((int, (cell, int), cell, cell, cell, slice), int) $Main$_fun_resultOfDelete((int, (cell, int), cell, cell, cell, slice) $self, slice $sellerAddress) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), __tact_not_null(__tact_dict_get_slice_int($self'pairsUsersDeletedContracts, 267, $sellerAddress, 257)));
+}
+
+((int, (cell, int), cell, cell, cell, slice), int) $Main$_fun_resultOfBuy((int, (cell, int), cell, cell, cell, slice) $self, slice $buyerAddress) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), __tact_not_null(__tact_dict_get_slice_int($self'pairsUsersBoughtContracts, 267, $buyerAddress, 257)));
+}
+
+((int, (cell, int), cell, cell, cell, slice), (cell, int)) $Main$_fun_arrayOfLicenses((int, (cell, int), cell, cell, cell, slice) $self) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ($self'licenses'map, $self'licenses'length));
+}
+
+((int, (cell, int), cell, cell, cell, slice), (int, slice, slice, int, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice)) $Main$_fun_oneLicensebyId((int, (cell, int), cell, cell, cell, slice) $self, int $licenseId) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
     var ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status) = $License$_not_null($License$_load_opt(__tact_dict_get_int_cell($self'licenses'map, 257, $licenseId)));
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status));
-}
-
-((int, (cell, int), cell), int) $Main$_fun_LicenseIdbySellerAddress((int, (cell, int), cell) $self, slice $sellerAddress) impure inline_ref {
-    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), __tact_not_null(__tact_dict_get_slice_int($self'pairs, 267, $sellerAddress, 257)));
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status));
 }
 
 ;;
 ;; Receivers of a Contract Main
 ;;
 
-(((int, (cell, int), cell)), ()) $Main$_internal_binary_LicenseCreate((int, (cell, int), cell) $self, (slice, slice, slice, slice, slice, slice, slice, int, slice, slice) $msg) impure inline {
-    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs) = $self;
+(((int, (cell, int), cell, cell, cell, slice)), ()) $Main$_internal_binary_LicenseCreate((int, (cell, int), cell, cell, cell, slice) $self, (slice, slice, slice, slice, slice, slice, slice, int, slice, slice) $msg) impure inline {
+    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
     var ($msg'sellerAddress, $msg'contentName, $msg'contentDescription, $msg'contentUrls, $msg'licenseType, $msg'contentCategory, $msg'contentSubcategory, $msg'price, $msg'allRestrictions, $msg'additionalTerms) = $msg;
-    int $licenseId = (string_hash($msg'contentDescription) / 100000000000000000000000000000000000);
+    int $licenseId = string_hash($msg'contentDescription);
     var ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status) = $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status($licenseId, $msg'sellerAddress, __tact_create_address(0, 0), now(), $msg'contentName, $msg'contentDescription, $msg'contentUrls, $msg'licenseType, $msg'contentCategory, $msg'contentSubcategory, $msg'price, __gen_slice_string_7f23a419b837f87cb02beed6e36d91ee847b2ebce01b9ef5a02df2baf4c081a1(), $msg'allRestrictions, $msg'additionalTerms, __gen_slice_string_4ecaf18c39fa13cb82f1fc3ed343fe15bcf6a0c9df909679d7646463211f410c());
     $self'licenses'map~__tact_dict_set_int_cell(257, $licenseId, $License$_store_cell(($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status)));
     $self'licenses'length = ($self'licenses'length + 1);
-    $self'pairs~__tact_dict_set_slice_int(267, $msg'sellerAddress, null(), 257);
-    $self'pairs~__tact_dict_set_slice_int(267, $msg'sellerAddress, $licenseId, 257);
-    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_reply($String$_fun_asComment(__tact_int_to_string($licenseId)));
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
+    $self'pairsUsersCreatedContracts~__tact_dict_set_slice_int(267, $msg'sellerAddress, null(), 257);
+    $self'pairsUsersCreatedContracts~__tact_dict_set_slice_int(267, $msg'sellerAddress, $licenseId, 257);
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }
 
-(((int, (cell, int), cell)), ()) $Main$_internal_binary_LicenseDelete((int, (cell, int), cell) $self, (int) $msg) impure inline {
-    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs) = $self;
-    var ($msg'licenseId) = $msg;
+(((int, (cell, int), cell, cell, cell, slice)), ()) $Main$_internal_binary_LicenseDelete((int, (cell, int), cell, cell, cell, slice) $self, (int, slice) $msg) impure inline {
+    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
+    var ($msg'licenseId, $msg'sellerAddress) = $msg;
+    var ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status) = $License$_not_null($License$_load_opt(__tact_dict_get_int_cell($self'licenses'map, 257, $msg'licenseId)));
+    throw_unless(23004, ( __tact_slice_eq_bits($msg'sellerAddress, $license'sellerAddress) ));
+    throw_unless(46050, (~ null?($license'licenseId)));
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_opt(null()));
     $self'licenses'length = ($self'licenses'length - 1);
-    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_reply(__gen_cell_comment_dbe1c797d6d2d914c463173b1da531103d2efe747471212d1fad170fcf0c75d2());
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
+    $self'pairsUsersDeletedContracts~__tact_dict_set_slice_int(267, $msg'sellerAddress, null(), 257);
+    $self'pairsUsersDeletedContracts~__tact_dict_set_slice_int(267, $msg'sellerAddress, $msg'licenseId, 257);
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }
 
-(((int, (cell, int), cell)), ()) $Main$_internal_binary_LicenseBuy((int, (cell, int), cell) $self, (int, slice) $msg) impure inline {
-    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs) = $self;
+(((int, (cell, int), cell, cell, cell, slice)), ()) $Main$_internal_binary_LicenseBuy((int, (cell, int), cell, cell, cell, slice) $self, (int, slice) $msg) impure inline {
+    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
     var ($msg'licenseId, $msg'buyerAddress) = $msg;
     var ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status) = $License$_not_null($License$_load_opt(__tact_dict_get_int_cell($self'licenses'map, 257, $msg'licenseId)));
+    throw_unless(6108, ( ~ __tact_slice_eq_bits($msg'buyerAddress, $license'sellerAddress) ));
+    throw_unless(46050, (~ null?($license'licenseId)));
+    throw_unless(50625, __tact_slice_eq(__gen_slice_string_4ecaf18c39fa13cb82f1fc3ed343fe15bcf6a0c9df909679d7646463211f410c(), $license'status));
     $license'status = __gen_slice_string_84916524b9e8f10533f5cd9c2855ca81c0bb05fc84dcec43114cb12cc47300c5();
     $license'buyerAddress = $msg'buyerAddress;
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_opt(null()));
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_cell(($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status)));
-    $global_send($SendParameters$_constructor_to_value_mode_body(__tact_context_get_sender(), 0, 128, __gen_cell_comment_7d5de4b320891379f1fc7f718dd7a10de03f18bc98a42ead8f20a06524866d50()));
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
+    $self'pairsUsersBoughtContracts~__tact_dict_set_slice_int(267, $msg'buyerAddress, null(), 257);
+    $self'pairsUsersBoughtContracts~__tact_dict_set_slice_int(267, $msg'buyerAddress, $msg'licenseId, 257);
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }
 
-(((int, (cell, int), cell)), ()) $Main$_internal_binary_Deploy((int, (cell, int), cell) $self, (int) $deploy) impure inline {
-    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs) = $self;
+((int, (cell, int), cell, cell, cell, slice), ()) $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec((int, (cell, int), cell, cell, cell, slice) $self) impure inline {
+    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
+    throw_unless(15509, ( __tact_slice_eq_bits($self'deployer, __tact_context_get_sender()) ));
+    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, ((__tact_my_balance() - $Context$_get_value(__tact_context_get())) - 10000000), (64 + 2)));
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
+}
+
+(((int, (cell, int), cell, cell, cell, slice)), ()) $Main$_internal_binary_Deploy((int, (cell, int), cell, cell, cell, slice) $self, (int) $deploy) impure inline {
+    var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
     var ($deploy'queryId) = $deploy;
-    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
+    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)~$Main$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }
 
 ;;
 ;; Get methods of a Contract Main
 ;;
+
+_ %balance() method_id(104128) {
+    var self = $Main$_contract_load();
+    var res = self~$Main$_fun_balance();
+    return res;
+}
+
+_ %resultOfCreate(slice $$sellerAddress) method_id(125015) {
+    slice $sellerAddress = __tact_verify_address($$sellerAddress);
+    var self = $Main$_contract_load();
+    var res = self~$Main$_fun_resultOfCreate($sellerAddress);
+    return res;
+}
+
+_ %resultOfDelete(slice $$sellerAddress) method_id(93231) {
+    slice $sellerAddress = __tact_verify_address($$sellerAddress);
+    var self = $Main$_contract_load();
+    var res = self~$Main$_fun_resultOfDelete($sellerAddress);
+    return res;
+}
+
+_ %resultOfBuy(slice $$buyerAddress) method_id(77602) {
+    slice $buyerAddress = __tact_verify_address($$buyerAddress);
+    var self = $Main$_contract_load();
+    var res = self~$Main$_fun_resultOfBuy($buyerAddress);
+    return res;
+}
 
 _ %arrayOfLicenses() method_id(104337) {
     var self = $Main$_contract_load();
@@ -97,13 +156,6 @@ _ %oneLicensebyId(int $$licenseId) method_id(127879) {
     return $License$_to_external(res);
 }
 
-_ %LicenseIdbySellerAddress(slice $$sellerAddress) method_id(94933) {
-    slice $sellerAddress = __tact_verify_address($$sellerAddress);
-    var self = $Main$_contract_load();
-    var res = self~$Main$_fun_LicenseIdbySellerAddress($sellerAddress);
-    return res;
-}
-
 _ supported_interfaces() method_id {
     return (
         "org.ton.introspection.v0"H >> 128,
@@ -114,7 +166,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://Qmf92NE5dStFSWgbkeHcCH2u7S19sPPH8bYoL64EZdw57X";
+    return "ipfs://QmfULc1fCzY1sPrAMddW9SEA9xDUWmod4MHb21GVsCy5gE";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -125,7 +177,7 @@ _ lazy_deployment_completed() method_id {
 ;; Routing of a Contract Main
 ;;
 
-((int, (cell, int), cell), int) $Main$_contract_router_internal((int, (cell, int), cell) self, int msg_bounced, slice in_msg) impure inline_ref {
+((int, (cell, int), cell, cell, cell, slice), int) $Main$_contract_router_internal((int, (cell, int), cell, cell, cell, slice) self, int msg_bounced, slice in_msg) impure inline_ref {
     ;; Handle bounced messages
     if (msg_bounced) {
         return (self, true);
@@ -146,7 +198,7 @@ _ lazy_deployment_completed() method_id {
     }
     
     ;; Receive LicenseDelete message
-    if (op == 2185736809) {
+    if (op == 743609516) {
         var msg = in_msg~$LicenseDelete$_load();
         self~$Main$_internal_binary_LicenseDelete(msg);
         return (self, true);
@@ -164,6 +216,17 @@ _ lazy_deployment_completed() method_id {
         var msg = in_msg~$Deploy$_load();
         self~$Main$_internal_binary_Deploy(msg);
         return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "withdraw safe" message
+        if (text_op == 0xbeb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec) {
+            self~$Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec();
+            return (self, true);
+        }
     }
     
     return (self, false);

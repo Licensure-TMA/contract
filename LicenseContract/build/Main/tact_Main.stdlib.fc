@@ -90,105 +90,65 @@ int __tact_dict_get_slice_int(cell d, int kl, slice k, int vl) inline {
     }
 }
 
+int __tact_slice_eq_bits(slice a, slice b) inline {
+    return equal_slice_bits(a, b);
+}
+
+int __tact_slice_eq(slice a, slice b) inline {
+    return (a.slice_hash() ==  b.slice_hash());
+}
+
 forall X0, X1 -> (X0, X1) __tact_tuple_destroy_2(tuple v) asm "2 UNTUPLE";
 
 forall X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14 -> tuple __tact_tuple_create_15((X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14) v) asm "15 TUPLE";
 
 forall X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14 -> (X0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14) __tact_tuple_destroy_15(tuple v) asm "15 UNTUPLE";
 
-tuple __tact_string_builder_start(builder b) inline {
-    return tpush(tpush(empty_tuple(), b), null());
-}
-
-tuple __tact_string_builder_start_comment() inline {
-    return __tact_string_builder_start(begin_cell().store_uint(0, 32));
-}
-
-cell __tact_string_builder_end(tuple builders) inline {
-    (builder b, tuple tail) = uncons(builders);
-    cell c = b.end_cell();
-    while(~ null?(tail)) {
-        (b, tail) = uncons(tail);
-        c = b.store_ref(c).end_cell();
-    }
-    return c;
-}
-
-((tuple), ()) __tact_string_builder_append(tuple builders, slice sc) inline_ref {
-    int sliceRefs = slice_refs(sc);
-    int sliceBits = slice_bits(sc);
+slice __tact_float_to_string(int src, int digits) inline_ref {
+    throw_if(134, (digits <= 0) | (digits > 77));
+    builder b = begin_cell();
     
-    while((sliceBits > 0) | (sliceRefs > 0)) {
-    
-        ;; Load the current builder
-        (builder b, tuple tail) = uncons(builders);
-        int remBytes = 127 - (builder_bits(b) / 8);
-        int exBytes = sliceBits / 8;
-    
-        ;; Append bits
-        int amount = min(remBytes, exBytes);
-        if (amount > 0) {
-            slice read = sc~load_bits(amount * 8);
-            b = b.store_slice(read);
-        }
-    
-        ;; Update builders
-        builders = cons(b, tail);
-    
-        ;; Check if we need to add a new cell and continue
-        if (exBytes - amount > 0) {
-            var bb = begin_cell();
-            builders = cons(bb, builders);
-            sliceBits = (exBytes - amount) * 8;
-        } elseif (sliceRefs > 0) {
-            sc = sc~load_ref().begin_parse();
-            sliceRefs = slice_refs(sc);
-            sliceBits = slice_bits(sc);
-        } else {
-            sliceBits = 0;
-            sliceRefs = 0;
-        }
-    }
-    
-    return ((builders), ());
-}
-
-slice __tact_int_to_string(int src) inline_ref {
-    var b = begin_cell();
     if (src < 0) {
         b = b.store_uint(45, 8);
         src = - src;
     }
     
-    if (src < 1000000000000000000000000000000) {
-        int len = 0;
-        int value = 0;
-        int mult = 1;
-        do {
-            (src, int res) = src.divmod(10);
-            value = value + (res + 48) * mult;
-            mult = mult * 256;
+    ;; Process rem part
+    int skip = true;
+    int len = 0;
+    int rem = 0;
+    tuple t = empty_tuple();
+    repeat(digits) {
+        (src, rem) = src.divmod(10);
+        if ( ~ ( skip & ( rem == 0 ) ) ) {
+            skip = false;
+            t~tpush(rem + 48);
             len = len + 1;
-        } until (src == 0);
-    
-        b = b.store_uint(value, len * 8);
-    } else {
-        tuple t = empty_tuple();
-        int len = 0;
-        do {
-            int digit = src % 10;
-            t~tpush(digit);
-            len = len + 1;
-            src = src / 10;
-        } until (src == 0);
-    
-        int c = len - 1;
-        repeat(len) {
-            int v = t.at(c);
-            b = b.store_uint(v + 48, 8);
-            c = c - 1;
         }
     }
+    
+    ;; Process dot
+    if (~ skip) {
+        t~tpush(46);
+        len = len + 1;
+    }
+    
+    ;; Main
+    do {
+        (src, rem) = src.divmod(10);
+        t~tpush(rem + 48);
+        len = len + 1;
+    } until (src == 0);
+    
+    ;; Assemble
+    int c = len - 1;
+    repeat(len) {
+        int v = t.at(c);
+        b = b.store_uint(v, 8);
+        c = c - 1;
+    }
+    
+    ;; Result
     return b.end_cell().begin_parse();
 }
 
@@ -235,15 +195,13 @@ slice __tact_int_to_string(int src) inline_ref {
     send_raw_message($c, $params'mode);
 }
 
-cell $String$_fun_asComment(slice $self) impure inline_ref {
+slice $Int$_fun_toCoinsString(int $self) impure inline {
     var ($self) = $self;
-    tuple $b = __tact_string_builder_start_comment();
-    $b~__tact_string_builder_append($self);
-    return __tact_string_builder_end($b);
+    return __tact_float_to_string($self, 9);
 }
 
-((int, (cell, int), cell), ()) $Main$_fun_forward((int, (cell, int), cell) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
-    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
+((int, (cell, int), cell, cell, cell, slice), ()) $Main$_fun_forward((int, (cell, int), cell, cell, cell, slice) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
     var ($init) = $init;
     cell $code = null();
     cell $data = null();
@@ -259,21 +217,15 @@ cell $String$_fun_asComment(slice $self) impure inline_ref {
         if (($balanceBeforeMessage < 0)) {
             raw_reserve(0, 0);
             $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (128 + 2), $body, $code, $data));
-            return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
+            return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
         }
     }
     $global_send($SendParameters$_constructor_bounce_to_value_mode_body_code_data($bounce, $to, 0, (64 + 2), $body, $code, $data));
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }
 
-((int, (cell, int), cell), ()) $Main$_fun_reply((int, (cell, int), cell) $self, cell $body) impure inline {
-    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
-    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_forward(__tact_context_get_sender(), $body, true, null());
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
-}
-
-((int, (cell, int), cell), ()) $Main$_fun_notify((int, (cell, int), cell) $self, cell $body) impure inline {
-    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)) = $self;
-    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs)~$Main$_fun_forward(__tact_context_get_sender(), $body, false, null());
-    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairs), ());
+((int, (cell, int), cell, cell, cell, slice), ()) $Main$_fun_notify((int, (cell, int), cell, cell, cell, slice) $self, cell $body) impure inline {
+    var (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)) = $self;
+    ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer)~$Main$_fun_forward(__tact_context_get_sender(), $body, false, null());
+    return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }

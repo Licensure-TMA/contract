@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: Main
-BOC Size: 2008 bytes
+BOC Size: 2473 bytes
 
 # Types
 Total Types: 11
@@ -42,23 +42,31 @@ TLB: `_ map:dict<int, ^License{licenseId:int257,sellerAddress:address,buyerAddre
 Signature: `LicenseArray{map:dict<int, ^License{licenseId:int257,sellerAddress:address,buyerAddress:address,createdAt:uint32,contentName:^string,contentDescription:^string,contentUrls:^string,licenseType:^string,contentCategory:^string,contentSubcategory:^string,price:coins,currency:^string,allRestrictions:^string,additionalTerms:^string,status:^string}>,length:uint64}`
 
 ## LicenseDelete
-TLB: `license_delete#8247b269 licenseId:int257 = LicenseDelete`
-Signature: `LicenseDelete{licenseId:int257}`
+TLB: `license_delete#2c5294ac licenseId:int257 sellerAddress:address = LicenseDelete`
+Signature: `LicenseDelete{licenseId:int257,sellerAddress:address}`
 
 ## LicenseBuy
 TLB: `license_buy#863c797b licenseId:int257 buyerAddress:address = LicenseBuy`
 Signature: `LicenseBuy{licenseId:int257,buyerAddress:address}`
 
 # Get Methods
-Total Get Methods: 3
+Total Get Methods: 6
+
+## balance
+
+## resultOfCreate
+Argument: sellerAddress
+
+## resultOfDelete
+Argument: sellerAddress
+
+## resultOfBuy
+Argument: buyerAddress
 
 ## arrayOfLicenses
 
 ## oneLicensebyId
 Argument: licenseId
-
-## LicenseIdbySellerAddress
-Argument: sellerAddress
 
 # Error Codes
 2: Stack undeflow
@@ -85,3 +93,8 @@ Argument: sellerAddress
 135: Code of a contract was not found
 136: Invalid address
 137: Masterchain support is not enabled for this contract
+6108: No permission to buy
+15509: Only deployer is allowed to withdraw
+23004: No permission to delete
+46050: No license exists
+50625: License is already purchased

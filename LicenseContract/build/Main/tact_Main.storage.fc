@@ -10,6 +10,16 @@
 }
 
 ;;
+;; Type: Context
+;; TLB: _ bounced:bool sender:address value:int257 raw:^slice = Context
+;;
+
+_ $Context$_get_value((int, slice, int, slice) v) inline {
+    var (v'bounced, v'sender, v'value, v'raw) = v;
+    return v'value;
+}
+
+;;
 ;; Type: SendParameters
 ;; TLB: _ bounce:bool to:address value:int257 mode:int257 body:Maybe ^cell code:Maybe ^cell data:Maybe ^cell = SendParameters
 ;;
@@ -18,8 +28,8 @@
     return (bounce, to, value, mode, body, code, data);
 }
 
-((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_mode_body(slice to, int value, int mode, cell body) inline {
-    return (true, to, value, mode, body, null(), null());
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_bounce_value_mode(slice to, int bounce, int value, int mode) inline {
+    return (bounce, to, value, mode, null(), null(), null());
 }
 
 ;;
@@ -199,14 +209,15 @@ builder $LicenseArray$_store(builder build_0, (cell, int) v) inline {
 
 ;;
 ;; Type: LicenseDelete
-;; Header: 0x8247b269
-;; TLB: license_delete#8247b269 licenseId:int257 = LicenseDelete
+;; Header: 0x2c5294ac
+;; TLB: license_delete#2c5294ac licenseId:int257 sellerAddress:address = LicenseDelete
 ;;
 
-(slice, ((int))) $LicenseDelete$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 2185736809);
+(slice, ((int, slice))) $LicenseDelete$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 743609516);
     var v'licenseId = sc_0~load_int(257);
-    return (sc_0, (v'licenseId));
+    var v'sellerAddress = sc_0~__tact_load_address();
+    return (sc_0, (v'licenseId, v'sellerAddress));
 }
 
 ;;
@@ -226,19 +237,28 @@ builder $LicenseArray$_store(builder build_0, (cell, int) v) inline {
 ;; Type: Main
 ;;
 
-builder $Main$_store(builder build_0, (int, (cell, int), cell) v) inline {
-    var (v'id, (v'licenses'map, v'licenses'length), v'pairs) = v;
+builder $Main$_store(builder build_0, (int, (cell, int), cell, cell, cell, slice) v) inline {
+    var (v'id, (v'licenses'map, v'licenses'length), v'pairsUsersCreatedContracts, v'pairsUsersDeletedContracts, v'pairsUsersBoughtContracts, v'deployer) = v;
     build_0 = build_0.store_uint(v'id, 32);
     build_0 = $LicenseArray$_store(build_0, (v'licenses'map, v'licenses'length));
-    build_0 = build_0.store_dict(v'pairs);
+    build_0 = build_0.store_dict(v'pairsUsersCreatedContracts);
+    var build_1 = begin_cell();
+    build_1 = build_1.store_dict(v'pairsUsersDeletedContracts);
+    build_1 = build_1.store_dict(v'pairsUsersBoughtContracts);
+    build_1 = __tact_store_address(build_1, v'deployer);
+    build_0 = store_ref(build_0, build_1.end_cell());
     return build_0;
 }
 
-(slice, ((int, (cell, int), cell))) $Main$_load(slice sc_0) inline {
+(slice, ((int, (cell, int), cell, cell, cell, slice))) $Main$_load(slice sc_0) inline {
     var v'id = sc_0~load_uint(32);
     var v'licenses = sc_0~$LicenseArray$_load();
-    var v'pairs = sc_0~load_dict();
-    return (sc_0, (v'id, v'licenses, v'pairs));
+    var v'pairsUsersCreatedContracts = sc_0~load_dict();
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'pairsUsersDeletedContracts = sc_1~load_dict();
+    var v'pairsUsersBoughtContracts = sc_1~load_dict();
+    var v'deployer = sc_1~__tact_load_address();
+    return (sc_0, (v'id, v'licenses, v'pairsUsersCreatedContracts, v'pairsUsersDeletedContracts, v'pairsUsersBoughtContracts, v'deployer));
 }
 
 (slice, ((int))) $Main$init$_load(slice sc_0) inline {
@@ -246,7 +266,7 @@ builder $Main$_store(builder build_0, (int, (cell, int), cell) v) inline {
     return (sc_0, (v'id));
 }
 
-(int, (cell, int), cell) $Main$_contract_load() impure inline_ref {
+(int, (cell, int), cell, cell, cell, slice) $Main$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -261,7 +281,7 @@ builder $Main$_store(builder build_0, (int, (cell, int), cell) v) inline {
     }
 }
 
-() $Main$_contract_store((int, (cell, int), cell) v) impure inline {
+() $Main$_contract_store((int, (cell, int), cell, cell, cell, slice) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

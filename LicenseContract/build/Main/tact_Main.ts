@@ -581,31 +581,36 @@ function dictValueParserLicenseArray(): DictionaryValue<LicenseArray> {
 export type LicenseDelete = {
     $$type: 'LicenseDelete';
     licenseId: bigint;
+    sellerAddress: Address;
 }
 
 export function storeLicenseDelete(src: LicenseDelete) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(2185736809, 32);
+        b_0.storeUint(743609516, 32);
         b_0.storeInt(src.licenseId, 257);
+        b_0.storeAddress(src.sellerAddress);
     };
 }
 
 export function loadLicenseDelete(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2185736809) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 743609516) { throw Error('Invalid prefix'); }
     let _licenseId = sc_0.loadIntBig(257);
-    return { $$type: 'LicenseDelete' as const, licenseId: _licenseId };
+    let _sellerAddress = sc_0.loadAddress();
+    return { $$type: 'LicenseDelete' as const, licenseId: _licenseId, sellerAddress: _sellerAddress };
 }
 
 function loadTupleLicenseDelete(source: TupleReader) {
     let _licenseId = source.readBigNumber();
-    return { $$type: 'LicenseDelete' as const, licenseId: _licenseId };
+    let _sellerAddress = source.readAddress();
+    return { $$type: 'LicenseDelete' as const, licenseId: _licenseId, sellerAddress: _sellerAddress };
 }
 
 function storeTupleLicenseDelete(source: LicenseDelete) {
     let builder = new TupleBuilder();
     builder.writeNumber(source.licenseId);
+    builder.writeAddress(source.sellerAddress);
     return builder.build();
 }
 
@@ -680,8 +685,8 @@ function initMain_init_args(src: Main_init_args) {
 }
 
 async function Main_init(id: bigint) {
-    const __code = Cell.fromBase64('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');
-    const __system = Cell.fromBase64('te6cckECKQEAB9YAAQHAAQEFoY83AgEU/wD0pBP0vPLICwMCAWISBAIBIBAFAgEgDAYCASAJBwIVtnD7Z4qge2eNifAnCAFIgQEBJAJZ9A1voZIwbd8gbpIwbY6H0Ns8bB9vD+IgbvLQgG8vGAIBIAsKAHWybuNDVpcGZzOi8vUW1mOTJORTVkU3RGU1dnYmtlSGNDSDJ1N1MxOXNQUEg4YllvTDY0RVpkdzU3WIIAARsK+7UTQ0gABgAgEgDg0Albd6ME4LnYerpZXPY9CdhzrJUKNs0E4TusalpWyPlmRadeW/vixHME4ECrgDcAzscpnLB1XI5LZYcE4TsunLVmnZbmdB0s2yjN0UkAIRtvI7Z5tnjYhQJw8ABFMhAk2/lqkGukwICF3XlwRBBrhYUQQIJ/3XloRMGE3XlwRG2eKoHtnjYgwnEQA4gQELIgKBAQFBM/QKb6GUAdcAMJJbbeIgbvLQgAKu0AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8VRPbPPLggsj4QwHMfwHKAFUwUDTLHwIC9ADLP/QAye1UJxMEbgGSMH/gcCHXScIflTAg1wsf3iCCEJTAfyu6jwgw2zxsGts8f+AgghCCR7JpuuMCIIIQhjx5e7omHBoUAtyOuDDTHwGCEIY8eXu68uCBgQEB1wD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEmwS2zx/4IIQlGqYtrqOp9MfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8f+AwcBUeBPYkgQEBI1n0DW+hkjBt3yBukjBtjofQ2zxsH28P4iBu8tCAby8wO4tFBhaWSIEBAW0gbpIwbY6NIG7y0IBvL8hV4Ns8yeICERQCVhEBIG6VMFn0WjCUQTP0FeIOC4EBARETyFXg2zzJE0VQIG6VMFn0WjCUQTP0FeL4QnAYJCQWAhaDBoh/VTBtbds8AhcfACgAAAAASGVsbG8gZnJvbSBUYWN0IQH2gQEB1wD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0x/UAdAB1AHQAdQB0AHUAdDUAdAB1AHQAdQB0AH6ANQw0NQB0AHUAdAB1AHQAdQw0NQw0BCPGQAYEI4QjRCMEIsQihCJA5gw0x8BghCCR7JpuvLggYEBAdcAATGBAQFtIG6SMG2OjSBu8tCAby/IVeDbPMniEDUSIG6VMFn0WjCUQTP0FeIBpYhBMPhCAX9t2zx/JBseAAwAAAAAT0sC7Cf5AoJCaEwuWOmwRXDx/aoiqQRwIMhyAcsBcAHLABLKB8v/ydAg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCI+COLNUT06It1BlbmRpbmeCRR3w0QXBBLEK9QmBBXEEYQX1BCH1XQgQEBD8hV4Ns8ySIQNwEkHQOmIG6VMFn0WjCUQTP0FeIDpAKBAQsibYEBASFulVtZ9FkwmMgBzwBBM/RB4oEBC1glgQEBIW6VW1n0WTCYyAHPAEEz9EHiA9s82zxBMPhCAX9t2zwjIR4BOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8HwHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAgAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAULIcAHLH28AAW+MbW+MAds8byIByZMhbrOWAW8iWczJ6DEiALog10oh10mXIMIAIsIAsY5KA28igH8izzGrAqEFqwJRVbYIIMIAnCCqAhXXGFAzzxZAFN5ZbwJTQaHCAJnIAW8CUEShqgKOEjEzwgCZ1DDQINdKIddJknAg4uLoXwMA3sghwQCYgC0BywcBowHeIYI4Mnyyc0EZ07epqh25jiBwIHGOFAR6qQymMCWoEqAEqgcCpCHAAEUw5jAzqgLPAY4rbwBwjhEjeqkIEm+MAaQDeqkEIMAAFOYzIqUDnFMCb4GmMFjLBwKlWeQwMeLJ0AH2UO+BAQHPAFAMINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAog10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYYyx/IUAfPFslQBszIUAXPFslQBMzIUAPPFslYzMjIUAPPFslYzMhQA88WyVjMyFADzxbJJQBqWMxY+gLIyFAEzxbJUAPMyFAEzxbJUAPMyFAEzxbJUAPMyMhQBc8WyVAEzMlQA8zJAczJAcwAuNMfAYIQlMB/K7ry4IH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdQB0AHUAdAB1AHQAdQB0NQB0AHUAdAB1AHQAfoA1DDQ1AHQAdQw0BBqEGkQaBBnAWDtRNDUAfhj0gABn9Mf9ATTP1kC9AQEUDNsFOD4KNcLCoMJuvLgiYEBAdcAAQHR2zwoAAZtcG3n1bWc');
+    const __code = Cell.fromBase64('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');
+    const __system = Cell.fromBase64('te6cckECMgEACacAAQHAAQEFoY83AgEU/wD0pBP0vPLICwMCAWIcBAIBIBcFAgEgDwYCASAMBwIBIAoIAiOw4fbPFUG2zw/Pz8/Pz8/VWeAwCQFIgQEBJwJZ9A1voZIwbd8gbpIwbY6H0Ns8bB9vD+IgbvLQgG8vKQJNshXINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiNs8VQbbPGxxgMAsAOIEBCyUCgQEBQTP0Cm+hlAHXADCSW23iIG7y0IACASAODQB1sm7jQ1aXBmczovL1FtZlVMYzFmQ3pZMXNQckFNZGRXOVNFQTl4RFVXbW9kNE1IYjIxR1ZzQ3k1Z0WCAAEbCvu1E0NIAAYAIBIBEQAJW3ejBOC52Hq6WVz2PQnYc6yVCjbNBOE7rGpaVsj5ZkWnXlv74sRzBOBAq4A3AM7HKZywdVyOS2WHBOE7Lpy1Zp2W5nQdLNsozdFJACA3rgFBICD6JHbPNs8bHKMBMABFNUAg+jA2zzbPGxxjAVAQ74J28Qeds8FgDaIMEBIcJNsfLQhsgiwQCYgC0BywcCowLef3BvAASOGwR6qQwgwABSMLCzm3AzpjAUb4wEpAQDkTDiBOQBs5cCgC5vjAKk3o4QA3qpDKYwE2+MA6QiwAAQNOYzIqUDmlMSb4EBywcCpQLkbCHJ0AIBIBoYAk26wvINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiNs8VQbbPGxxgwGQA4gQELJAKBAQFBM/QKb6GUAdcAMJJbbeIgbvLQgAJNuvIiDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjbPFUG2zxscYMBsAOIEBCyMCgQEBQTP0Cm+hlAHXADCSW23iIG7y0IADetAB0NMDAXGwowH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIVFBTA28E+GEC+GLbPFUW2zzy4IIwHh0AiMj4QwHMfwHKAFVgUGfLH0BDAvQAyz/0AAHI9AAS9ABYINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WyQHMye1UBOjtou37AZIwf+BwIddJwh+VMCDXCx/eIIIQlMB/K7qPCDDbPGwa2zx/4CCCECxSlKy6jrgw0x8BghAsUpSsuvLggYEBAdcA+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBJsEts8f+AgghCGPHl7ui8rJx8D6o64MNMfAYIQhjx5e7ry4IGBAQHXAPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSbBLbPH/gIIIQlGqYtrqOqDDTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gwACRMOMNcCQhIAGo+QGC8L6yk1qCCJsVTTL5nEN3qpYKoRU2bMLGAnVeNrl/UFzsuo6sgTyV+EJSIMcF8vT4Qn/4J28Q+EFvJBNfA6GCCJiWgKGAQhAjbW1t2zx/2zHgIgE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwiAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7ACMAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwD8CeBAQEjWfQNb6GSMG3fIG6SMG2Oh9DbPGwfbw/iIG7y0IBvLzyBF9xT/ccFs/L0ggCz4i5us/L0ggDFwYt1BlbmRpbmeFANAfkBAfkBuhzy9ItFBhaWSC6BAQFtIG6SMG2OjSBu8tCAby/IVeDbPMniAhEYAlYSASktJQL+IG6VMFn0WjCUQTP0FeIQ3hDOCxEWCwoRFgoJERYJCBEWCAcRFgcGERYGBREWBQQRFgQDERYDAhEWAgERFgEOgQEBERfIVeDbPMlBkFIwIG6VMFn0WjCUQTP0FeIDgQELKG2BAQEhbpVbWfRZMJjIAc8AQTP0QeKBAQtaGIEBAS0mACghbpVbWfRZMJjIAc8AQTP0QeJQBQPcJ4EBASNZ9A1voZIwbd8gbpIwbY6H0Ns8bB9vD+IgbvLQgG8vXw0igVncAscF8vSCALPiAW6z8vSBAQFtIG6SMG2OjSBu8tCAby/IVeDbPMniIxA6ASBulTBZ9FowlEEz9BXiBqUEgQELKG2BAQEpLSgAYCFulVtZ9FkwmMgBzwBBM/RB4oEBC1oYgQEBIW6VW1n0WTCYyAHPAEEz9EHiEEVAFAH2gQEB1wD6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0x/UAdAB1AHQAdQB0AHUAdDUAdAB1AHQAdQB0AH6ANQw0NQB0AHUAdAB1AHQAdQw0NQw0BCPKgAYEI4QjRCMEIsQihCJAvYn+QJwIMhyAcsBcAHLABLKB8v/ydAg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCI+COLNUT06It1BlbmRpbmeCRR3w0QXBBLEK9QmBBXEEYQX1BCH1XQgQEBD8hV4Ns8ySIQOgEgbpUwWfRaMJRBM/QV4gakBYEBCyItLABqbYEBASFulVtZ9FkwmMgBzwBBM/RB4oEBC0ADCIEBASFulVtZ9FkwmMgBzwBBM/RB4hBFAwQB9lDvgQEBzwBQDCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAKINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WGMsfyFAHzxbJUAbMyFAFzxbJUATMyFADzxbJWMzIyFADzxbJWMzIUAPPFslYzMhQA88WyS4AaljMWPoCyMhQBM8WyVADzMhQBM8WyVADzMhQBM8WyVADzMjIUAXPFslQBMzJUAPMyQHMyQHMALjTHwGCEJTAfyu68uCB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHUAdAB1AHQAdQB0AHUAdDUAdAB1AHQAdQB0AH6ANQw0NQB0AHUMNAQahBpEGgQZwG27UTQ1AH4Y9IAAY450x/0BNM/WQL0BNQB0PQE9AT6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIMRA3EDYQNGwX4Pgo1wsKgwm68uCJgQEB1wABAdHbPDEADm1wbW1t+ELx/yP4');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -715,6 +720,11 @@ const Main_errors: { [key: number]: { message: string } } = {
     135: { message: `Code of a contract was not found` },
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
+    6108: { message: `No permission to buy` },
+    15509: { message: `Only deployer is allowed to withdraw` },
+    23004: { message: `No permission to delete` },
+    46050: { message: `No license exists` },
+    50625: { message: `License is already purchased` },
 }
 
 const Main_types: ABIType[] = [
@@ -727,20 +737,24 @@ const Main_types: ABIType[] = [
     {"name":"LicenseCreate","header":2495643435,"fields":[{"name":"sellerAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"contentName","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentDescription","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentUrls","type":{"kind":"simple","type":"string","optional":false}},{"name":"licenseType","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentCategory","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentSubcategory","type":{"kind":"simple","type":"string","optional":false}},{"name":"price","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"allRestrictions","type":{"kind":"simple","type":"string","optional":false}},{"name":"additionalTerms","type":{"kind":"simple","type":"string","optional":false}}]},
     {"name":"License","header":null,"fields":[{"name":"licenseId","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"sellerAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"buyerAddress","type":{"kind":"simple","type":"address","optional":false}},{"name":"createdAt","type":{"kind":"simple","type":"uint","optional":false,"format":32}},{"name":"contentName","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentDescription","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentUrls","type":{"kind":"simple","type":"string","optional":false}},{"name":"licenseType","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentCategory","type":{"kind":"simple","type":"string","optional":false}},{"name":"contentSubcategory","type":{"kind":"simple","type":"string","optional":false}},{"name":"price","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}},{"name":"currency","type":{"kind":"simple","type":"string","optional":false}},{"name":"allRestrictions","type":{"kind":"simple","type":"string","optional":false}},{"name":"additionalTerms","type":{"kind":"simple","type":"string","optional":false}},{"name":"status","type":{"kind":"simple","type":"string","optional":false}}]},
     {"name":"LicenseArray","header":null,"fields":[{"name":"map","type":{"kind":"dict","key":"int","value":"License","valueFormat":"ref"}},{"name":"length","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
-    {"name":"LicenseDelete","header":2185736809,"fields":[{"name":"licenseId","type":{"kind":"simple","type":"int","optional":false,"format":257}}]},
+    {"name":"LicenseDelete","header":743609516,"fields":[{"name":"licenseId","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"sellerAddress","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"LicenseBuy","header":2252110203,"fields":[{"name":"licenseId","type":{"kind":"simple","type":"int","optional":false,"format":257}},{"name":"buyerAddress","type":{"kind":"simple","type":"address","optional":false}}]},
 ]
 
 const Main_getters: ABIGetter[] = [
+    {"name":"balance","arguments":[],"returnType":{"kind":"simple","type":"string","optional":false}},
+    {"name":"resultOfCreate","arguments":[{"name":"sellerAddress","type":{"kind":"simple","type":"address","optional":false}}],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
+    {"name":"resultOfDelete","arguments":[{"name":"sellerAddress","type":{"kind":"simple","type":"address","optional":false}}],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
+    {"name":"resultOfBuy","arguments":[{"name":"buyerAddress","type":{"kind":"simple","type":"address","optional":false}}],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
     {"name":"arrayOfLicenses","arguments":[],"returnType":{"kind":"simple","type":"LicenseArray","optional":false}},
     {"name":"oneLicensebyId","arguments":[{"name":"licenseId","type":{"kind":"simple","type":"int","optional":false,"format":257}}],"returnType":{"kind":"simple","type":"License","optional":false}},
-    {"name":"LicenseIdbySellerAddress","arguments":[{"name":"sellerAddress","type":{"kind":"simple","type":"address","optional":false}}],"returnType":{"kind":"simple","type":"int","optional":false,"format":257}},
 ]
 
 const Main_receivers: ABIReceiver[] = [
     {"receiver":"internal","message":{"kind":"typed","type":"LicenseCreate"}},
     {"receiver":"internal","message":{"kind":"typed","type":"LicenseDelete"}},
     {"receiver":"internal","message":{"kind":"typed","type":"LicenseBuy"}},
+    {"receiver":"internal","message":{"kind":"text","text":"withdraw safe"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
 
@@ -774,7 +788,7 @@ export class Main implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: LicenseCreate | LicenseDelete | LicenseBuy | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: LicenseCreate | LicenseDelete | LicenseBuy | 'withdraw safe' | Deploy) {
         
         let body: Cell | null = null;
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'LicenseCreate') {
@@ -786,6 +800,9 @@ export class Main implements Contract {
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'LicenseBuy') {
             body = beginCell().store(storeLicenseBuy(message)).endCell();
         }
+        if (message === 'withdraw safe') {
+            body = beginCell().storeUint(0, 32).storeStringTail(message).endCell();
+        }
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Deploy') {
             body = beginCell().store(storeDeploy(message)).endCell();
         }
@@ -793,6 +810,37 @@ export class Main implements Contract {
         
         await provider.internal(via, { ...args, body: body });
         
+    }
+    
+    async getBalance(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('balance', builder.build())).stack;
+        let result = source.readString();
+        return result;
+    }
+    
+    async getResultOfCreate(provider: ContractProvider, sellerAddress: Address) {
+        let builder = new TupleBuilder();
+        builder.writeAddress(sellerAddress);
+        let source = (await provider.get('resultOfCreate', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
+    }
+    
+    async getResultOfDelete(provider: ContractProvider, sellerAddress: Address) {
+        let builder = new TupleBuilder();
+        builder.writeAddress(sellerAddress);
+        let source = (await provider.get('resultOfDelete', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
+    }
+    
+    async getResultOfBuy(provider: ContractProvider, buyerAddress: Address) {
+        let builder = new TupleBuilder();
+        builder.writeAddress(buyerAddress);
+        let source = (await provider.get('resultOfBuy', builder.build())).stack;
+        let result = source.readBigNumber();
+        return result;
     }
     
     async getArrayOfLicenses(provider: ContractProvider) {
@@ -807,14 +855,6 @@ export class Main implements Contract {
         builder.writeNumber(licenseId);
         let source = (await provider.get('oneLicensebyId', builder.build())).stack;
         const result = loadTupleLicense(source);
-        return result;
-    }
-    
-    async getLicenseIdbySellerAddress(provider: ContractProvider, sellerAddress: Address) {
-        let builder = new TupleBuilder();
-        builder.writeAddress(sellerAddress);
-        let source = (await provider.get('LicenseIdbySellerAddress', builder.build())).stack;
-        let result = source.readBigNumber();
         return result;
     }
     

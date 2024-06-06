@@ -12,11 +12,9 @@ PROGRAM{
   DECLPROC __tact_dict_get_int_cell
   DECLPROC __tact_dict_set_slice_int
   DECLPROC __tact_dict_get_slice_int
-  DECLPROC __tact_string_builder_start
-  DECLPROC __tact_string_builder_start_comment
-  DECLPROC __tact_string_builder_end
-  DECLPROC __tact_string_builder_append
-  DECLPROC __tact_int_to_string
+  DECLPROC __tact_slice_eq_bits
+  DECLPROC __tact_slice_eq
+  DECLPROC __tact_float_to_string
   DECLPROC $Deploy$_load
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
@@ -35,6 +33,7 @@ PROGRAM{
   DECLPROC $Main$_store
   DECLPROC $Main$_load
   DECLPROC $StateInit$_not_null
+  DECLPROC $Context$_get_value
   DECLPROC $License$_to_external
   DECLPROC $LicenseArray$_to_external
   DECLPROC $Main$init$_load
@@ -43,24 +42,30 @@ PROGRAM{
   DECLPROC $Main$_contract_load
   DECLPROC $Main$_contract_store
   DECLPROC $global_send
-  DECLPROC $String$_fun_asComment
+  DECLPROC $Int$_fun_toCoinsString
+  DECLPROC $Main$_fun_balance
+  DECLPROC $Main$_fun_resultOfCreate
+  DECLPROC $Main$_fun_resultOfDelete
+  DECLPROC $Main$_fun_resultOfBuy
   DECLPROC $Main$_fun_arrayOfLicenses
   DECLPROC $Main$_fun_oneLicensebyId
-  DECLPROC $Main$_fun_LicenseIdbySellerAddress
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $Main$_fun_forward
-  DECLPROC $Main$_fun_reply
   DECLPROC $Main$_fun_notify
   DECLPROC $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status
-  DECLPROC $SendParameters$_constructor_to_value_mode_body
+  DECLPROC $SendParameters$_constructor_to_bounce_value_mode
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $Main$_internal_binary_LicenseCreate
   DECLPROC $Main$_internal_binary_LicenseDelete
   DECLPROC $Main$_internal_binary_LicenseBuy
+  DECLPROC $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec
   DECLPROC $Main$_internal_binary_Deploy
+  104128 DECLMETHOD %balance
+  125015 DECLMETHOD %resultOfCreate
+  93231 DECLMETHOD %resultOfDelete
+  77602 DECLMETHOD %resultOfBuy
   104337 DECLMETHOD %arrayOfLicenses
   127879 DECLMETHOD %oneLicensebyId
-  94933 DECLMETHOD %LicenseIdbySellerAddress
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
   115390 DECLMETHOD lazy_deployment_completed
@@ -182,178 +187,98 @@ PROGRAM{
       PUSHNULL
     }>
   }>
-  __tact_string_builder_start PROCINLINE:<{
-    NIL
-    SWAP
-    TPUSH
-    PUSHNULL
-    TPUSH
+  __tact_slice_eq_bits PROCINLINE:<{
+    SDEQ
   }>
-  __tact_string_builder_start_comment PROCINLINE:<{
-    NEWC
-    0 PUSHINT
+  __tact_slice_eq PROCINLINE:<{
     SWAP
-    32 STU
-    __tact_string_builder_start INLINECALLDICT
-  }>
-  __tact_string_builder_end PROCINLINE:<{
-    UNCONS
+    HASHSU
     SWAP
-    ENDC
-    WHILE:<{
-      OVER
-      ISNULL
-      NOT
-    }>DO<{
-      SWAP
-      UNCONS
-      -ROT
-      STREF
-      ENDC
-    }>
-    NIP
+    HASHSU
+    EQUAL
   }>
-  __tact_string_builder_append PROCREF:<{
+  __tact_float_to_string PROCREF:<{
     DUP
-    SREFS
+    1 LESSINT
     OVER
-    SBITS
-    WHILE:<{
-      DUP
-      0 GTINT
-      s2 PUSH
-      0 GTINT
-      OR
-    }>DO<{
-      s0 s3 XCHG
-      UNCONS
-      127 PUSHINT
-      s2 PUSH
-      BBITS
-      3 RSHIFT#
-      SUB
-      s0 s5 XCHG
-      3 RSHIFT#
-      s5 s5 XCPU
-      MIN
-      DUP
-      0 GTINT
-      IF:<{
-        DUP
-        3 LSHIFT#
-        s1 s5 XCHG
-        LDSLICEX
-        s3 s3 XCHG2
-        STSLICER
-        s0 s1 s4 XCHG3
-      }>
-      -ROT
-      CONS
-      s4 s1 PUSH2
-      SUB
-      0 GTINT
-      IF:<{
-        NEWC
-        SWAP
-        CONS
-        s4 s4 XCHG2
-        SUB
-        3 LSHIFT#
-      }>ELSE<{
-        NIP
-        s3 POP
-        0 GTINT
-        IF:<{
-          LDREF
-          DROP
-          CTOS
-          DUP
-          SREFS
-          OVER
-          SBITS
-        }>ELSE<{
-          0 PUSHINT
-          DUP
-        }>
-      }>
-    }>
-    3 BLKDROP
-  }>
-  __tact_int_to_string PROCREF:<{
+    77 GTINT
+    OR
+    134 THROWIF
     NEWC
-    OVER
+    s2 PUSH
     0 LESSINT
     IF:<{
       45 PUSHINT
       SWAP
       8 STU
-      SWAP
+      s0 s2 XCHG
       NEGATE
-      SWAP
+      s0 s2 XCHG
     }>
-    OVER
-    1000000000000000000000000000000 PUSHINTX
-    LESS
-    IF:<{
-      0 PUSHINT
+    TRUE
+    0 PUSHINT
+    NIL
+    s0 s4 XCHG
+    REPEAT:<{
+      s0 s4 XCHG
+      10 PUSHINT
+      DIVMOD
       DUP
-      1 PUSHINT
-      UNTIL:<{
-        s0 s4 XCHG
-        10 PUSHINT
-        DIVMOD
+      0 EQINT
+      s3 s(-1) PUXC
+      AND
+      NOT
+      IF:<{
+        FALSE
+        s3 POP
         48 ADDCONST
-        s5 PUSH
-        MUL
-        s1 s2 XCHG
-        ADD
-        s0 s4 XCHG
-        8 LSHIFT#
-        s0 s2 XCHG
-        INC
-        OVER
-        0 EQINT
-        s5 s3 s0 XCHG3
-      }>
-      DROP
-      s3 POP
-      3 LSHIFT#
-      STUX
-    }>ELSE<{
-      NIL
-      0 PUSHINT
-      UNTIL:<{
-        s3 PUSH
-        10 PUSHINT
-        MOD
-        s1 s2 XCHG
-        TPUSH
-        SWAP
-        INC
-        s0 s3 XCHG
-        10 PUSHINT
-        DIV
-        DUP
-        0 EQINT
         s1 s4 XCHG
+        TPUSH
+        s0 s4 XCHG
+        INC
+        s0 s4 XCHG
+        s0 s3 XCHG
+      }>ELSE<{
+        DROP
       }>
-      s3 POP
-      s2 PUSH
-      DEC
-      s0 s3 XCHG
-      REPEAT:<{
-        s0 s2 PUSH2
-        INDEXVAR
-        48 ADDCONST
-        ROT
-        8 STU
-        s0 s2 XCHG
-        DEC
-        -ROT
-      }>
-      DROP
-      NIP
+      s0 s4 XCHG
     }>
+    SWAP
+    NOT
+    IF:<{
+      s0 s2 XCHG
+      46 PUSHINT
+      TPUSH
+      s0 s2 XCHG
+      INC
+    }>
+    UNTIL:<{
+      s0 s3 XCHG
+      10 PUSHINT
+      DIVMOD
+      48 ADDCONST
+      s1 s3 XCHG
+      TPUSH
+      s0 s3 XCHG
+      INC
+      s2 PUSH
+      0 EQINT
+      s3 s4 XCHG
+    }>
+    s3 POP
+    s2 PUSH
+    DEC
+    s0 s3 XCHG
+    REPEAT:<{
+      s1 s2 PUSH2
+      INDEXVAR
+      SWAP
+      8 STU
+      s0 s2 XCHG
+      DEC
+      s0 s2 XCHG
+    }>
+    2 1 BLKDROP2
     ENDC
     CTOS
   }>
@@ -631,12 +556,13 @@ PROGRAM{
   $LicenseDelete$_load PROCINLINE:<{
     32 LDU
     SWAP
-    2185736809 PUSHINT
+    743609516 PUSHINT
     EQUAL
     129 THROWIFNOT
     257 PUSHINT
     LDIX
-    SWAP
+    __tact_load_address INLINECALLDICT
+    s1 s2 XCHG
   }>
   $LicenseBuy$_load PROCINLINE:<{
     32 LDU
@@ -650,25 +576,47 @@ PROGRAM{
     s1 s2 XCHG
   }>
   $Main$_store PROCINLINE:<{
-    s3 s4 XCHG2
+    s6 s7 XCHG2
     32 STU
-    s0 s2 XCHG
+    s0 s4 s3 XCHG3
     $LicenseArray$_store INLINECALLDICT
     STDICT
+    SWAP
+    NEWC
+    STDICT
+    s1 s2 XCHG
+    STDICT
+    ROT
+    __tact_store_address INLINECALLDICT
+    ENDC
+    SWAP
+    STREF
   }>
   $Main$_load PROCINLINE:<{
     32 LDU
     $LicenseArray$_load INLINECALLDICT
     s0 s2 XCHG
     LDDICT
-    s0 s4 XCHG
-    s3 s3 XCHG2
+    LDREF
+    SWAP
+    CTOS
+    LDDICT
+    LDDICT
+    __tact_load_address INLINECALLDICT
+    NIP
+    s3 s7 XCHG
+    s3 s6 XCHG
+    s3 s4 XCHG
   }>
   $StateInit$_not_null PROCINLINE:<{
     DUP
     ISNULL
     128 THROWIF
     2 UNTUPLE
+  }>
+  $Context$_get_value PROCINLINE:<{
+    s1 s3 XCHG
+    3 BLKDROP
   }>
   $License$_to_external PROCINLINE:<{
   }>
@@ -686,6 +634,9 @@ PROGRAM{
     PUSHNULL
     $LicenseArray$_constructor_map INLINECALLDICT
     PUSHNULL
+    PUSHNULL
+    PUSHNULL
+    __tact_context_get_sender INLINECALLDICT
   }>
   $Main$_contract_load PROCREF:<{
     c4 PUSH
@@ -697,7 +648,7 @@ PROGRAM{
     SWAP
     IFJMP:<{
       $Main$_load INLINECALLDICT
-      1 4 BLKDROP2
+      1 7 BLKDROP2
     }>
     MYADDR
     11 PLDU
@@ -717,7 +668,7 @@ PROGRAM{
     TRUE
     SWAP
     1 STI
-    4 -ROLL
+    7 -ROLL
     $Main$_store INLINECALLDICT
     ENDC
     c4 POP
@@ -824,30 +775,48 @@ PROGRAM{
     SWAP
     SENDRAWMSG
   }>
-  $String$_fun_asComment PROCREF:<{
-    __tact_string_builder_start_comment INLINECALLDICT
-    SWAP
-    __tact_string_builder_append INLINECALLDICT
-    __tact_string_builder_end INLINECALLDICT
+  $Int$_fun_toCoinsString PROCINLINE:<{
+    9 PUSHINT
+    __tact_float_to_string INLINECALLDICT
   }>
-  $Main$_fun_arrayOfLicenses PROCREF:<{
-    s2 s1 PUSH2
+  $Main$_fun_balance PROCREF:<{
+    __tact_my_balance INLINECALLDICT
+    $Int$_fun_toCoinsString INLINECALLDICT
   }>
-  $Main$_fun_oneLicensebyId PROCREF:<{
-    257 PUSHINT
-    s4 PUSH
-    s0 s2 XCHG
-    __tact_dict_get_int_cell INLINECALLDICT
-    $License$_load_opt INLINECALLDICT
-    $License$_not_null INLINECALLDICT
-  }>
-  $Main$_fun_LicenseIdbySellerAddress PROCREF:<{
+  $Main$_fun_resultOfCreate PROCREF:<{
     267 PUSHINT
-    s2 PUSH
+    s5 PUSH
     s0 s2 XCHG
     257 PUSHINT
     __tact_dict_get_slice_int INLINECALLDICT
     __tact_not_null INLINECALLDICT
+  }>
+  $Main$_fun_resultOfDelete PROCREF:<{
+    267 PUSHINT
+    s4 PUSH
+    s0 s2 XCHG
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    __tact_not_null INLINECALLDICT
+  }>
+  $Main$_fun_resultOfBuy PROCREF:<{
+    267 PUSHINT
+    s3 PUSH
+    s0 s2 XCHG
+    257 PUSHINT
+    __tact_dict_get_slice_int INLINECALLDICT
+    __tact_not_null INLINECALLDICT
+  }>
+  $Main$_fun_arrayOfLicenses PROCREF:<{
+    s5 s4 PUSH2
+  }>
+  $Main$_fun_oneLicensebyId PROCREF:<{
+    257 PUSHINT
+    s7 PUSH
+    s0 s2 XCHG
+    __tact_dict_get_int_cell INLINECALLDICT
+    $License$_load_opt INLINECALLDICT
+    $License$_not_null INLINECALLDICT
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -873,13 +842,6 @@ PROGRAM{
     $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
   }>
-  $Main$_fun_reply PROCINLINE:<{
-    __tact_context_get_sender INLINECALLDICT
-    SWAP
-    TRUE
-    PUSHNULL
-    $Main$_fun_forward INLINECALLDICT
-  }>
   $Main$_fun_notify PROCINLINE:<{
     __tact_context_get_sender INLINECALLDICT
     SWAP
@@ -889,9 +851,9 @@ PROGRAM{
   }>
   $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status PROCINLINE:<{
   }>
-  $SendParameters$_constructor_to_value_mode_body PROCINLINE:<{
-    TRUE
-    4 -ROLL
+  $SendParameters$_constructor_to_bounce_value_mode PROCINLINE:<{
+    s2 s3 XCHG
+    PUSHNULL
     PUSHNULL
     PUSHNULL
   }>
@@ -900,8 +862,6 @@ PROGRAM{
   $Main$_internal_binary_LicenseCreate PROCINLINE:<{
     s7 PUSH
     SHA256U
-    100000000000000000000000000000000000 PUSHINTX
-    DIV
     0 PUSHINT
     DUP
     __tact_create_address INLINECALLDICT
@@ -926,98 +886,201 @@ PROGRAM{
     s0 s15 XCHG
     $License$_store_cell INLINECALLDICT
     s2 PUSH
-    s3 s7 XCHG
+    s3 s10 XCHG
     SWAP
     __tact_dict_set_int_cell INLINECALLDICT
-    s0 s3 XCHG
+    s0 s6 XCHG
     INC
-    s0 s2 XCHG
+    s0 s5 XCHG
     267 PUSHINT
     s2 PUSH
     PUSHNULL
     257 PUSHINT
     __tact_dict_set_slice_int INLINECALLDICT
     267 PUSHINT
-    ROT
-    s5 PUSH
+    s0 s0 s3 XCHG3
+    s0 s8 XCHG
     257 PUSHINT
     __tact_dict_set_slice_int INLINECALLDICT
+    s4 s5 XCHG
     s0 s3 XCHG
-    __tact_int_to_string INLINECALLDICT
-    $String$_fun_asComment INLINECALLDICT
-    s1 s3 s0 XCHG3
-    $Main$_fun_reply INLINECALLDICT
+    s0 s4 XCHG
   }>
   $Main$_internal_binary_LicenseDelete PROCINLINE:<{
-    257 PUSHINT
-    PUSHNULL
-    $License$_store_opt INLINECALLDICT
-    s3 s5 XCHG
-    s1 s2 XCHG
-    __tact_dict_set_int_cell INLINECALLDICT
-    SWAP
-    DEC
-    B{b5ee9c7241010101000800000c000000004f4b86af522d} B>boc PUSHREF
-    s1 s3 s0 XCHG3
-    $Main$_fun_reply INLINECALLDICT
-  }>
-  $Main$_internal_binary_LicenseBuy PROCINLINE:<{
-    s4 PUSH
+    s7 PUSH
     257 PUSHINT
     s3 PUSH
     __tact_dict_get_int_cell INLINECALLDICT
     $License$_load_opt INLINECALLDICT
     $License$_not_null INLINECALLDICT
-    DROP
-    s11 POP
-    B{b5ee9c72410101010006000008506169643e7d7b66} B>boc <s PUSHSLICE
+    13 BLKDROP
+    s2 PUSH
+    23004 PUSHINT
+    s0 s2 XCHG
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    46050 PUSHINT
+    SWAP
+    ISNULL
+    NOT
+    THROWANYIFNOT
     257 PUSHINT
     PUSHNULL
     $License$_store_opt INLINECALLDICT
-    s2 20 s() XCHG
-    17 s() PUSH
+    s3 PUSH
+    s3 s10 XCHG
     SWAP
     __tact_dict_set_int_cell INLINECALLDICT
-    s0 s14 XCHG
-    s0 s11 XCHG
+    s0 s6 XCHG
+    DEC
+    s0 s4 XCHG
+    267 PUSHINT
+    s8 PUSH
+    PUSHNULL
     257 PUSHINT
-    s0 19 s() XCHG
-    $License$_store_cell INLINECALLDICT
-    s1 s3 XCHG
-    s5 s5 s0 XCHG3
+    __tact_dict_set_slice_int INLINECALLDICT
+    267 PUSHINT
+    2SWAP
+    s1 s8 XCHG
+    257 PUSHINT
+    __tact_dict_set_slice_int INLINECALLDICT
+    s4 s5 XCHG
+    s0 s1 s4 XCHG3
+  }>
+  $Main$_internal_binary_LicenseBuy PROCINLINE:<{
+    s7 PUSH
+    257 PUSHINT
+    s3 PUSH
+    __tact_dict_get_int_cell INLINECALLDICT
+    $License$_load_opt INLINECALLDICT
+    $License$_not_null INLINECALLDICT
+    s12 POP
+    6108 PUSHINT
+    s15 s13 PUSH2
+    __tact_slice_eq_bits INLINECALLDICT
+    NOT
+    THROWANYIFNOT
+    46050 PUSHINT
+    s14 PUSH
+    ISNULL
+    NOT
+    THROWANYIFNOT
+    50625 PUSHINT
+    B{b5ee9c7241010101000900000e50656e64696e670913d51a} B>boc <s PUSHSLICE
+    s0 s13 XCHG2
+    __tact_slice_eq INLINECALLDICT
+    s1 s12 XCHG
+    THROWANYIFNOT
+    B{b5ee9c72410101010006000008506169643e7d7b66} B>boc <s PUSHSLICE
+    s14 PUSH
+    257 PUSHINT
+    PUSHNULL
+    $License$_store_opt INLINECALLDICT
+    s2 24 s() XCHG
+    18 s() PUSH
+    SWAP
     __tact_dict_set_int_cell INLINECALLDICT
+    s13 s14 XCHG
+    s12 s14 XCHG
+    s11 22 s() XCHG
+    s10 22 s() XCHG
+    s9 22 s() XCHG
+    s8 22 s() XCHG
+    s7 22 s() XCHG
+    s6 22 s() XCHG
+    s5 22 s() XCHG
+    s4 22 s() XCHG
+    s3 22 s() XCHG
+    s2 22 s() XCHG
+    s1 22 s() XCHG
+    s0 s14 XCHG
+    257 PUSHINT
+    s0 23 s() XCHG
+    $License$_store_cell INLINECALLDICT
+    s1 s9 s0 XCHG3
+    s3 s(-1) PUXC
+    __tact_dict_set_int_cell INLINECALLDICT
+    s0 s3 XCHG
+    267 PUSHINT
+    s8 PUSH
+    PUSHNULL
+    257 PUSHINT
+    __tact_dict_set_slice_int INLINECALLDICT
+    267 PUSHINT
+    2SWAP
+    s1 s8 XCHG
+    257 PUSHINT
+    __tact_dict_set_slice_int INLINECALLDICT
+    s0 s5 XCHG2
+  }>
+  $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec PROCINLINE:<{
+    15509 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    0 PUSHINT
-    7 PUSHPOW2
-    B{b5ee9c724101010100160000280000000048656c6c6f2066726f6d205461637421c4fc208b} B>boc PUSHREF
-    $SendParameters$_constructor_to_value_mode_body INLINECALLDICT
+    s2 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    __tact_context_get_sender INLINECALLDICT
+    TRUE
+    __tact_my_balance INLINECALLDICT
+    __tact_context_get INLINECALLDICT
+    $Context$_get_value INLINECALLDICT
+    SUB
+    10000000 PUSHINT
+    SUB
+    66 PUSHINT
+    $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
     $global_send INLINECALLDICT
-    s0 s2 XCHG
   }>
   $Main$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
     $DeployOk$_store_cell INLINECALLDICT
     $Main$_fun_notify INLINECALLDICT
   }>
+  %balance PROC:<{
+    $Main$_contract_load INLINECALLDICT
+    $Main$_fun_balance INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %resultOfCreate PROC:<{
+    __tact_verify_address INLINECALLDICT
+    $Main$_contract_load INLINECALLDICT
+    7 ROLL
+    $Main$_fun_resultOfCreate INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %resultOfDelete PROC:<{
+    __tact_verify_address INLINECALLDICT
+    $Main$_contract_load INLINECALLDICT
+    7 ROLL
+    $Main$_fun_resultOfDelete INLINECALLDICT
+    7 1 BLKDROP2
+  }>
+  %resultOfBuy PROC:<{
+    __tact_verify_address INLINECALLDICT
+    $Main$_contract_load INLINECALLDICT
+    7 ROLL
+    $Main$_fun_resultOfBuy INLINECALLDICT
+    7 1 BLKDROP2
+  }>
   %arrayOfLicenses PROC:<{
     $Main$_contract_load INLINECALLDICT
     $Main$_fun_arrayOfLicenses INLINECALLDICT
-    4 2 BLKDROP2
+    7 2 BLKDROP2
     $LicenseArray$_to_external INLINECALLDICT
   }>
   %oneLicensebyId PROC:<{
     $Main$_contract_load INLINECALLDICT
-    4 ROLL
+    7 ROLL
     $Main$_fun_oneLicensebyId INLINECALLDICT
-    4 15 BLKDROP2
+    s15 POP
+    s15 POP
+    s15 POP
+    s15 POP
+    s15 POP
+    s15 POP
+    s15 POP
+    7 8 BLKSWAP
     $License$_to_external INLINECALLDICT
-  }>
-  %LicenseIdbySellerAddress PROC:<{
-    __tact_verify_address INLINECALLDICT
-    $Main$_contract_load INLINECALLDICT
-    4 ROLL
-    $Main$_fun_LicenseIdbySellerAddress INLINECALLDICT
-    4 1 BLKDROP2
   }>
   supported_interfaces PROC:<{
     123515602279859691144772641439386770278 PUSHINT
@@ -1026,7 +1089,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d6639324e453564537446535767626b6548634348327537533139735050483862596f4c3634455a6477353758} PUSHSLICE
+    x{697066733a2f2f516d66554c633166437a5931735072414d6464573953454139784455576d6f64344d486232314756734379356745} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1035,6 +1098,8 @@ PROGRAM{
     SWAP
   }>
   $Main$_contract_router_internal PROCREF:<{
+    c2 SAVE
+    SAMEALTSAVE
     SWAP
     IFJMP:<{
       DROP
@@ -1060,12 +1125,12 @@ PROGRAM{
       TRUE
     }>
     DUP
-    2185736809 PUSHINT
+    743609516 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
       $LicenseDelete$_load INLINECALLDICT
-      NIP
+      1 2 BLKDROP2
       $Main$_internal_binary_LicenseDelete INLINECALLDICT
       TRUE
     }>
@@ -1079,15 +1144,29 @@ PROGRAM{
       $Main$_internal_binary_LicenseBuy INLINECALLDICT
       TRUE
     }>
+    DUP
     2490013878 PUSHINT
     EQUAL
     IFJMP:<{
+      DROP
       $Deploy$_load INLINECALLDICT
       NIP
       $Main$_internal_binary_Deploy INLINECALLDICT
       TRUE
     }>
-    DROP
+    0 EQINT
+    IF:<{
+      HASHSU
+      86254957005153482593167742035089344693437782575091241529406133056369733950700 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+    }>ELSE<{
+      DROP
+    }>
     FALSE
   }>
   recv_internal PROC:<{
@@ -1109,7 +1188,7 @@ PROGRAM{
     s0 s2 XCHG
     __tact_context_sender SETGLOB
     $Main$_contract_load INLINECALLDICT
-    2 4 BLKSWAP
+    2 7 BLKSWAP
     $Main$_contract_router_internal INLINECALLDICT
     130 THROWIFNOT
     $Main$_contract_store INLINECALLDICT

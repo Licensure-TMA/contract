@@ -15,16 +15,7 @@ describe('Main', () => {
 
         deployer = await blockchain.treasury('deployer');
 
-        const deployResult = await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05'),
-            },
-            {
-                $$type: 'Deploy',
-                queryId: 0n,
-            }
-        );
+        const deployResult = await main.send(deployer.getSender(), { value: toNano('0.05') }, { $$type: 'Deploy', queryId: 0n });
 
         expect(deployResult.transactions).toHaveTransaction({
             from: deployer.address,
@@ -39,210 +30,253 @@ describe('Main', () => {
         // blockchain and main are ready to use
     });
 
-    it('should create', async () => {
-        const arrayBefore = await main.getArrayOfLicenses()
-        console.log("arrayBefore:", arrayBefore.length)
-        console.log("arrayBefore:", arrayBefore.map)
+    it('should create license', async () => {
+        const arrayBefore = await main.getArrayOfLicenses();
+        console.log("arrayBefore length:", arrayBefore.length);
 
-        const a = await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseCreate',
-                sellerAddress: deployer.address,
-                contentName: 'Videos with dogs1',
-                contentDescription: "super",
-                contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
-                licenseType: "Restricted license",
-                contentCategory: "Video",
-                contentSubcategory: "Internet video",
-                price: 50n,
-                allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
-                additionalTerms: ""
-            }
-        )
-        
-        console.log(a.transactions[1].outMessages.get(0).body.beginParse().loadStringTail())
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate',
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs1',
+            contentDescription: "super",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license",
+            contentCategory: "Video", 
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
 
-        const result1 = await main.getLicenseIdbySellerAddress(deployer.address)
-        console.log(result1)
+        const result1 = await main.getResultOfCreate(deployer.address);
+        console.log("Created license ID:", result1);
 
-        await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseCreate',
-                sellerAddress: deployer.address,
-                contentName: 'Videos with dogs',
-                contentDescription: "super!!!",
-                contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
-                licenseType: "Restricted license",
-                contentCategory: "Video",
-                contentSubcategory: "Internet video",
-                price: 50n,
-                allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
-                additionalTerms: ""
-            }
-        )
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate',
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs2',
+            contentDescription: "super!!!",  
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license",
+            contentCategory: "Video",
+            contentSubcategory: "Internet video", 
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
 
-        const arrayAfter = await main.getArrayOfLicenses()
-        console.log("arrayAfter:", arrayAfter.length)
-        console.log("arrayAfter:", arrayAfter.map)
-        
-        const result2 = await main.getLicenseIdbySellerAddress(deployer.address)
-        console.log(result2)
+        const arrayAfter = await main.getArrayOfLicenses();
+        console.log("arrayAfter length:", arrayAfter.length);
 
-        expect(arrayBefore.length).toBeLessThan(arrayAfter.length)
-        expect(result1 != result2)
+        expect(arrayBefore.length).toBeLessThan(arrayAfter.length); 
     });
 
-    it('should getting', async () => {
-        await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseCreate',
-                sellerAddress: deployer.address,
-                contentName: 'Videos with dogs1',
-                contentDescription: "super",
-                contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
-                licenseType: "Restricted license",
-                contentCategory: "Video",
-                contentSubcategory: "Internet video",
-                price: 50n,
-                allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
-                additionalTerms: ""
-            }
-        )
+    it('should get license by ID', async () => {
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate',
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs1',
+            contentDescription: "super",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license",
+            contentCategory: "Video",
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No", 
+            additionalTerms: ""
+        });
         
-        const result1 = await main.getLicenseIdbySellerAddress(deployer.address)
-        console.log(result1)
+        const licenseId = await main.getResultOfCreate(deployer.address);
+        console.log("Created license ID:", licenseId);
 
-        const license = await main.getOneLicensebyId(result1)
-        console.log(license)
+        const license = await main.getOneLicensebyId(licenseId);
+        console.log("Retrieved license:", license);
 
-        expect(license != null)
+        expect(license).not.toBeNull();
     });
 
-    it('should delete', async () => {
-        await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseCreate',
-                sellerAddress: deployer.address,
-                contentName: 'Videos with dogs1',
-                contentDescription: "super",
-                contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
-                licenseType: "Restricted license",
-                contentCategory: "Video",
-                contentSubcategory: "Internet video",
-                price: 50n,
-                allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
-                additionalTerms: ""
-            }
-        )
+    it('should delete license', async () => {
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate', 
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs1',
+            contentDescription: "super",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license",
+            contentCategory: "Video",
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
+
+        const licenseId1 = await main.getResultOfCreate(deployer.address);
+        console.log("Created license ID 1:", licenseId1);
         
-        const result1 = await main.getLicenseIdbySellerAddress(deployer.address)
-        console.log(result1)
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, { 
+            $$type: 'LicenseCreate',
+            sellerAddress: deployer.address, 
+            contentName: 'Videos with dogs2',
+            contentDescription: "super!!!",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license",
+            contentCategory: "Video",
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
 
-        await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseCreate',
-                sellerAddress: deployer.address,
-                contentName: 'Videos with dogs',
-                contentDescription: "super!!!",
-                contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
-                licenseType: "Restricted license",
-                contentCategory: "Video",
-                contentSubcategory: "Internet video",
-                price: 50n,
-                allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
-                additionalTerms: ""
-            }
-        )
+        const licenseId2 = await main.getResultOfCreate(deployer.address);  
+        console.log("Created license ID 2:", licenseId2);
+
+        const arrayBefore = await main.getArrayOfLicenses();
+        console.log("arrayBefore length:", arrayBefore.length);
         
-        const result2 = await main.getLicenseIdbySellerAddress(deployer.address)
-        console.log(result2)
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseDelete', 
+            licenseId: licenseId1,
+            sellerAddress: deployer.address
+        });
 
-        const arrayBefore = await main.getArrayOfLicenses()
-        console.log("arrayBefore:", arrayBefore.length)
-        console.log("arrayBefore:", arrayBefore.map)
-
-        const test = await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseDelete',
-                licenseId: result1
-            }
-        )
+        const deletedLicenseId = await main.getResultOfDelete(deployer.address);
+        console.log("Deleted license ID:", deletedLicenseId);
         
-        console.log(test.transactions[1].outMessages.get(0)?.body.beginParse().loadStringTail())
-
-        const arrayAfter = await main.getArrayOfLicenses()
-        console.log("arrayAfter:", arrayAfter.length)
-        console.log("arrayAfter:", arrayAfter.map)
-
-        expect(arrayAfter.length).toBeLessThan(arrayBefore.length)
+        const arrayAfter = await main.getArrayOfLicenses();
+        console.log("arrayAfter length:", arrayAfter.length);
+        
+        expect(arrayAfter.length).toBeLessThan(arrayBefore.length);
+    });
+    
+    it('should buy license', async () => {
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate',
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs1',
+            contentDescription: "super",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license", 
+            contentCategory: "Video",
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
+        
+        const licenseId = await main.getResultOfCreate(deployer.address);
+        console.log("Created license ID:", licenseId);
+        
+        const licenseBefore = await main.getOneLicensebyId(licenseId);
+        console.log("License before purchase:", licenseBefore);
+        
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, { 
+            $$type: 'LicenseBuy',
+            licenseId: licenseId,
+            buyerAddress: address('UQCbnJk3TBqKhQT8N_TaqDtCyLDyBKRSPxZhYWsn23X0UTeo') 
+        });
+        
+        const boughtLicenseId = await main.getResultOfBuy(address('UQCbnJk3TBqKhQT8N_TaqDtCyLDyBKRSPxZhYWsn23X0UTeo'));
+        console.log("Bought license ID:", boughtLicenseId); 
+        
+        const licenseAfter = await main.getOneLicensebyId(licenseId);
+        console.log("License after purchase:", licenseAfter);
+        
+        expect(licenseAfter.buyerAddress).not.toEqual(licenseBefore.buyerAddress);
+        expect(licenseAfter.status).toEqual("Paid"); 
     });
 
-    it('should buy', async () => {
-        await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseCreate',
-                sellerAddress: deployer.address,
-                contentName: 'Videos with dogs1',
-                contentDescription: "super",
-                contentUrls:"1 - https://docs.tact-lang.org/cookbook/data-structures",
-                licenseType: "Restricted license",
-                contentCategory: "Video",
-                contentSubcategory: "Internet video",
-                price: 50n,
-                allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
-                additionalTerms: ""
-            }
-        )
+    it('should fail to delete license without permission', async () => {
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate', 
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs1',
+            contentDescription: "super",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license",
+            contentCategory: "Video",
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
+
+        const licenseId = await main.getResultOfCreate(deployer.address);
+        console.log("Created license ID:", licenseId);
+
+        const anotherAddress = address('EQBGhqLAZseEqRXz4ByFPTGV7SVMlI4hrbs-Sps_Xzx01x8G');
         
-        const result1 = await main.getLicenseIdbySellerAddress(deployer.address)
-        console.log(result1)
+        await expect(main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseDelete', 
+            licenseId: licenseId,
+            sellerAddress: anotherAddress
+        })).rejects.toThrow("No permission to delete");
+    });
 
-        const buy= await main.getOneLicensebyId(result1)
-        console.log(buy)
+    it('should fail to buy own license', async () => {
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate',
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs1',
+            contentDescription: "super",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license", 
+            contentCategory: "Video",
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
+        
+        const licenseId = await main.getResultOfCreate(deployer.address);
+        console.log("Created license ID:", licenseId);
+        
+        await expect(main.send(deployer.getSender(), { value: toNano('0.05') }, { 
+            $$type: 'LicenseBuy',
+            licenseId: licenseId,
+            buyerAddress: deployer.address
+        })).rejects.toThrow("No permission to buy");
+    });
 
-        await main.send(
-            deployer.getSender(),
-            {
-                value: toNano('0.05')
-            },
-            {
-                $$type: 'LicenseBuy',
-                licenseId: result1,
-                buyerAddress: address('EQBGhqLAZseEqRXz4ByFPTGV7SVMlI4hrbs-Sps_Xzx01x8G')
-            }
-        )
+    it('should fail to buy non-existing license', async () => {
+        const nonExistingLicenseId = 12345n;
+        const buyerAddress = address('EQBGhqLAZseEqRXz4ByFPTGV7SVMlI4hrbs-Sps_Xzx01x8G');
+        
+        await expect(main.send(deployer.getSender(), { value: toNano('0.05') }, { 
+            $$type: 'LicenseBuy',
+            licenseId: nonExistingLicenseId,
+            buyerAddress: buyerAddress
+        })).rejects.toThrow("No license exists");
+    });
 
-        const buyResult= await main.getOneLicensebyId(result1)
-        console.log(buyResult)
-
-        expect(buyResult != buy)
+    it('should fail to buy already purchased license', async () => {
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, {
+            $$type: 'LicenseCreate',
+            sellerAddress: deployer.address,
+            contentName: 'Videos with dogs1',
+            contentDescription: "super",
+            contentUrls: "1 - https://docs.tact-lang.org/cookbook/data-structures",
+            licenseType: "Restricted license", 
+            contentCategory: "Video",
+            contentSubcategory: "Internet video",
+            price: 50n,
+            allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
+            additionalTerms: ""
+        });
+        
+        const licenseId = await main.getResultOfCreate(deployer.address);
+        console.log("Created license ID:", licenseId);
+        
+        const buyerAddress = address('EQBGhqLAZseEqRXz4ByFPTGV7SVMlI4hrbs-Sps_Xzx01x8G');
+        await main.send(deployer.getSender(), { value: toNano('0.05') }, { 
+            $$type: 'LicenseBuy',
+            licenseId: licenseId,
+            buyerAddress: buyerAddress 
+        });
+        
+        await expect(main.send(deployer.getSender(), { value: toNano('0.05') }, { 
+            $$type: 'LicenseBuy',
+            licenseId: licenseId,
+            buyerAddress: buyerAddress
+        })).rejects.toThrow("License is already purchased");
     });
 });
