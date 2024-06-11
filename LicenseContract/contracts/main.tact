@@ -53,7 +53,7 @@ contract Main with Deployable {
     pairsUsersDeletedContracts: map<Address, Int>;
     pairsUsersBoughtContracts: map<Address, Int>;
 
-    const MinTonForStorage: Int = ton("0.01"); // enough for 1 KB of storage for 2.5 years
+    const MinTonForStorage: Int = ton("0.02"); // enough for 1 KB of storage for 2.5 years
     deployer: Address;
 
     init(id: Int) {

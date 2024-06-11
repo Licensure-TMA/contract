@@ -101,7 +101,7 @@
 ((int, (cell, int), cell, cell, cell, slice), ()) $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec((int, (cell, int), cell, cell, cell, slice) $self) impure inline {
     var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
     throw_unless(15509, ( __tact_slice_eq_bits($self'deployer, __tact_context_get_sender()) ));
-    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, ((__tact_my_balance() - $Context$_get_value(__tact_context_get())) - 10000000), (64 + 2)));
+    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, ((__tact_my_balance() - $Context$_get_value(__tact_context_get())) - 20000000), (64 + 2)));
     return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }
 

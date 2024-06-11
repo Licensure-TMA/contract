@@ -1025,7 +1025,7 @@ PROGRAM{
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
     SUB
-    10000000 PUSHINT
+    20000000 PUSHINT
     SUB
     66 PUSHINT
     $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
