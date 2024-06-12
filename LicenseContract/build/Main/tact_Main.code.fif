@@ -30,6 +30,7 @@ PROGRAM{
   DECLPROC $LicenseArray$_load
   DECLPROC $LicenseDelete$_load
   DECLPROC $LicenseBuy$_load
+  DECLPROC $LicenseBuyV2$_load
   DECLPROC $Main$_store
   DECLPROC $Main$_load
   DECLPROC $StateInit$_not_null
@@ -58,6 +59,7 @@ PROGRAM{
   DECLPROC $Main$_internal_binary_LicenseCreate
   DECLPROC $Main$_internal_binary_LicenseDelete
   DECLPROC $Main$_internal_binary_LicenseBuy
+  DECLPROC $Main$_internal_binary_LicenseBuyV2
   DECLPROC $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec
   DECLPROC $Main$_internal_binary_Deploy
   104128 DECLMETHOD %balance
@@ -575,6 +577,19 @@ PROGRAM{
     __tact_load_address INLINECALLDICT
     s1 s2 XCHG
   }>
+  $LicenseBuyV2$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    897895574 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    257 PUSHINT
+    LDIX
+    __tact_load_address INLINECALLDICT
+    SWAP
+    LDGRAMS
+    3 -ROLL
+  }>
   $Main$_store PROCINLINE:<{
     s6 s7 XCHG2
     32 STU
@@ -1013,6 +1028,79 @@ PROGRAM{
     __tact_dict_set_slice_int INLINECALLDICT
     s0 s5 XCHG2
   }>
+  $Main$_internal_binary_LicenseBuyV2 PROCINLINE:<{
+    s8 PUSH
+    257 PUSHINT
+    s4 PUSH
+    __tact_dict_get_int_cell INLINECALLDICT
+    $License$_load_opt INLINECALLDICT
+    $License$_not_null INLINECALLDICT
+    s12 POP
+    6108 PUSHINT
+    16 s() PUSH
+    s14 PUSH
+    __tact_slice_eq_bits INLINECALLDICT
+    NOT
+    THROWANYIFNOT
+    46050 PUSHINT
+    s14 PUSH
+    ISNULL
+    NOT
+    THROWANYIFNOT
+    50625 PUSHINT
+    B{b5ee9c7241010101000900000e50656e64696e670913d51a} B>boc <s PUSHSLICE
+    s0 s13 XCHG2
+    __tact_slice_eq INLINECALLDICT
+    s1 s12 XCHG
+    THROWANYIFNOT
+    B{b5ee9c72410101010006000008506169643e7d7b66} B>boc <s PUSHSLICE
+    s15 PUSH
+    257 PUSHINT
+    PUSHNULL
+    $License$_store_opt INLINECALLDICT
+    s2 25 s() XCHG
+    19 s() PUSH
+    SWAP
+    __tact_dict_set_int_cell INLINECALLDICT
+    s12 s14 XCHG
+    257 PUSHINT
+    s14 PUSH
+    s0 s13 XCHG
+    s12 25 s() XCHG
+    s0 s11 XCHG
+    s10 25 s() XCHG
+    s0 s9 XCHG
+    s8 25 s() XCHG
+    s0 s7 XCHG
+    s6 25 s() XCHG
+    s0 s5 XCHG
+    s4 25 s() XCHG
+    s0 s3 XCHG
+    s2 25 s() XCHG
+    s1 16 s() XCHG
+    $License$_store_cell INLINECALLDICT
+    s11 s11 s0 XCHG3
+    s5 s(-1) PUXC
+    __tact_dict_set_int_cell INLINECALLDICT
+    s1 s9 XCHG
+    TRUE
+    s0 s10 XCHG2
+    66 PUSHINT
+    $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
+    $global_send INLINECALLDICT
+    s0 s3 XCHG
+    267 PUSHINT
+    s4 PUSH
+    PUSHNULL
+    257 PUSHINT
+    __tact_dict_set_slice_int INLINECALLDICT
+    267 PUSHINT
+    2SWAP
+    s1 s4 XCHG
+    257 PUSHINT
+    __tact_dict_set_slice_int INLINECALLDICT
+    SWAP
+  }>
   $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec PROCINLINE:<{
     15509 PUSHINT
     __tact_context_get_sender INLINECALLDICT
@@ -1089,7 +1177,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d66554c633166437a5931735072414d6464573953454139784455576d6f64344d486232314756734379356745} PUSHSLICE
+    x{697066733a2f2f516d594e33387854626767545544676e4163484c5874646b7a4b6136466a673653715656437967336f4278574d65} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1142,6 +1230,16 @@ PROGRAM{
       $LicenseBuy$_load INLINECALLDICT
       1 2 BLKDROP2
       $Main$_internal_binary_LicenseBuy INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    897895574 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $LicenseBuyV2$_load INLINECALLDICT
+      1 3 BLKDROP2
+      $Main$_internal_binary_LicenseBuyV2 INLINECALLDICT
       TRUE
     }>
     DUP

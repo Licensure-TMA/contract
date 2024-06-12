@@ -149,6 +149,8 @@ describe('Main', () => {
     });
     
     it('should buy license', async () => {
+        const price = 50n;
+
         await main.send(deployer.getSender(), { value: toNano('0.05') }, {
             $$type: 'LicenseCreate',
             sellerAddress: deployer.address,
@@ -158,7 +160,7 @@ describe('Main', () => {
             licenseType: "Restricted license", 
             contentCategory: "Video",
             contentSubcategory: "Internet video",
-            price: 50n,
+            price: price,
             allRestrictions: "Duration: 1 year; Purpose: Training neural networks, Marketing; Modification: No",
             additionalTerms: ""
         });
@@ -169,10 +171,13 @@ describe('Main', () => {
         const licenseBefore = await main.getOneLicensebyId(licenseId);
         console.log("License before purchase:", licenseBefore);
         
-        await main.send(deployer.getSender(), { value: toNano('0.05') }, { 
-            $$type: 'LicenseBuy',
+        const forTransfer = price + (price * BigInt(3) / BigInt(100));
+        console.log('amount:', price, ' ', 'forTransfer:', forTransfer);
+        await main.send(deployer.getSender(), { value: toNano(forTransfer) }, { 
+            $$type: 'LicenseBuyV2',
             licenseId: licenseId,
-            buyerAddress: address('UQCbnJk3TBqKhQT8N_TaqDtCyLDyBKRSPxZhYWsn23X0UTeo') 
+            buyerAddress: address('UQCbnJk3TBqKhQT8N_TaqDtCyLDyBKRSPxZhYWsn23X0UTeo'),
+            amount: price
         });
         
         const boughtLicenseId = await main.getResultOfBuy(address('UQCbnJk3TBqKhQT8N_TaqDtCyLDyBKRSPxZhYWsn23X0UTeo'));

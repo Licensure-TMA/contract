@@ -234,6 +234,20 @@ builder $LicenseArray$_store(builder build_0, (cell, int) v) inline {
 }
 
 ;;
+;; Type: LicenseBuyV2
+;; Header: 0x3584cc96
+;; TLB: license_buy_v2#3584cc96 licenseId:int257 buyerAddress:address amount:coins = LicenseBuyV2
+;;
+
+(slice, ((int, slice, int))) $LicenseBuyV2$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 897895574);
+    var v'licenseId = sc_0~load_int(257);
+    var v'buyerAddress = sc_0~__tact_load_address();
+    var v'amount = sc_0~load_coins();
+    return (sc_0, (v'licenseId, v'buyerAddress, v'amount));
+}
+
+;;
 ;; Type: Main
 ;;
 

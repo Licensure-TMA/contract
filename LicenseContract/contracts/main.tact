@@ -46,6 +46,12 @@ message LicenseBuy {
     buyerAddress: Address;
 }
 
+message LicenseBuyV2 {
+    licenseId: Int;
+    buyerAddress: Address;
+    amount: Int as coins;
+}
+
 contract Main with Deployable {
     id: Int as uint32;
     licenses: LicenseArray;
@@ -131,6 +137,38 @@ contract Main with Deployable {
         //Save copy of License with new info
         self.licenses.map.set(msg.licenseId, license);
         
+        //Update operation result
+        self.pairsUsersBoughtContracts.set(msg.buyerAddress, null);
+        self.pairsUsersBoughtContracts.set(msg.buyerAddress, msg.licenseId);
+    }
+
+    receive(msg: LicenseBuyV2) {
+        //Make copy of License
+        let license: License = self.licenses.map.get(msg.licenseId)!!;
+
+        //Check License
+        require(license.sellerAddress != msg.buyerAddress, "No permission to buy");
+        require(license.licenseId != null, "No license exists");
+        require(license.status == "Pending", "License is already purchased");
+
+        //Mark as Paid
+        license.status = "Paid";
+        license.buyerAddress = msg.buyerAddress;
+
+        //Delete original License
+        self.licenses.map.set(msg.licenseId, null);
+
+        //Save copy of License with new info
+        self.licenses.map.set(msg.licenseId, license);
+
+        //Money transfer
+        send(SendParameters{
+            to: license.sellerAddress,
+            bounce: true,
+            value: msg.amount,
+            mode: SendRemainingValue + SendIgnoreErrors
+        });
+
         //Update operation result
         self.pairsUsersBoughtContracts.set(msg.buyerAddress, null);
         self.pairsUsersBoughtContracts.set(msg.buyerAddress, msg.licenseId);
