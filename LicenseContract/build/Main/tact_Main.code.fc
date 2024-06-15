@@ -100,16 +100,18 @@
 
 (((int, (cell, int), cell, cell, cell, slice)), ()) $Main$_internal_binary_LicenseBuyV2((int, (cell, int), cell, cell, cell, slice) $self, (int, slice, int) $msg) impure inline {
     var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
-    var ($msg'licenseId, $msg'buyerAddress, $msg'amount) = $msg;
+    var ($msg'licenseId, $msg'buyerAddress, $msg'cost) = $msg;
     var ($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status) = $License$_not_null($License$_load_opt(__tact_dict_get_int_cell($self'licenses'map, 257, $msg'licenseId)));
+    int $transfer = ($msg'cost * 1000000000);
     throw_unless(6108, ( ~ __tact_slice_eq_bits($msg'buyerAddress, $license'sellerAddress) ));
     throw_unless(46050, (~ null?($license'licenseId)));
     throw_unless(50625, __tact_slice_eq(__gen_slice_string_4ecaf18c39fa13cb82f1fc3ed343fe15bcf6a0c9df909679d7646463211f410c(), $license'status));
+    throw_unless(48618, (__tact_my_balance() >= $transfer));
     $license'status = __gen_slice_string_84916524b9e8f10533f5cd9c2855ca81c0bb05fc84dcec43114cb12cc47300c5();
     $license'buyerAddress = $msg'buyerAddress;
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_opt(null()));
     $self'licenses'map~__tact_dict_set_int_cell(257, $msg'licenseId, $License$_store_cell(($license'licenseId, $license'sellerAddress, $license'buyerAddress, $license'createdAt, $license'contentName, $license'contentDescription, $license'contentUrls, $license'licenseType, $license'contentCategory, $license'contentSubcategory, $license'price, $license'currency, $license'allRestrictions, $license'additionalTerms, $license'status)));
-    $global_send($SendParameters$_constructor_to_bounce_value_mode($license'sellerAddress, true, $msg'amount, (64 + 2)));
+    $global_send($SendParameters$_constructor_to_bounce_value_mode_body($license'sellerAddress, true, $transfer, (2 + 1), __gen_cell_comment_57c72522ae76c8c849fae3deb529d8b57040c08dbeb6be3bda682d8822f40cf8()));
     $self'pairsUsersBoughtContracts~__tact_dict_set_slice_int(267, $msg'buyerAddress, null(), 257);
     $self'pairsUsersBoughtContracts~__tact_dict_set_slice_int(267, $msg'buyerAddress, $msg'licenseId, 257);
     return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
@@ -118,7 +120,7 @@
 ((int, (cell, int), cell, cell, cell, slice), ()) $Main$_internal_text_beb2935a82089b154d32f99c4377aa960aa115366cc2c602755e36b97f505cec((int, (cell, int), cell, cell, cell, slice) $self) impure inline {
     var ($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer) = $self;
     throw_unless(15509, ( __tact_slice_eq_bits($self'deployer, __tact_context_get_sender()) ));
-    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, ((__tact_my_balance() - $Context$_get_value(__tact_context_get())) - 20000000), (64 + 2)));
+    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, ((__tact_my_balance() - $Context$_get_value(__tact_context_get())) - 10000000), (64 + 2)));
     return (($self'id, ($self'licenses'map, $self'licenses'length), $self'pairsUsersCreatedContracts, $self'pairsUsersDeletedContracts, $self'pairsUsersBoughtContracts, $self'deployer), ());
 }
 
@@ -183,7 +185,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmYN38xTbggTUDgnAcHLXtdkzKa6Fjg6SqVVCyg3oBxWMe";
+    return "ipfs://QmU3bSo5i3CpFUNfvEk2m2qMPxzXvkG36KKBeDsaiLQhfU";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -229,7 +231,7 @@ _ lazy_deployment_completed() method_id {
     }
     
     ;; Receive LicenseBuyV2 message
-    if (op == 897895574) {
+    if (op == 15630029) {
         var msg = in_msg~$LicenseBuyV2$_load();
         self~$Main$_internal_binary_LicenseBuyV2(msg);
         return (self, true);

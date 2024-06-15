@@ -3,7 +3,7 @@ import { Main } from '../wrappers/Main';
 import { NetworkProvider } from '@ton/blueprint';
 
 export async function run(provider: NetworkProvider) {
-    const main = provider.open(await Main.fromInit(5641654n));
+    const main = provider.open(await Main.fromInit(564165498n));
 
     await main.send(
         provider.sender(),
@@ -12,9 +12,9 @@ export async function run(provider: NetworkProvider) {
         },
         {
             $$type: 'LicenseCreate',
-            sellerAddress: address("EQAokDRDElCtgydnbRoag1uJAKJFU2yAQG8oP69FGjqZFCa-"),
-            contentName: 'Video with cats on YT',
-            contentDescription: "CATS are very amusing; they make us smile and laugh! They are the best! You are usually cheerful when you are among cats and animals!",
+            sellerAddress: address("kQAokDRDElCtgydnbRoag1uJAKJFU2yAQG8oP69FGjqZFJ00"),
+            contentName: 'Video with cats on YT!!!',
+            contentDescription: "Cats!! are very amusing; they make us smile and laugh! They are the best! You are usually cheerful when you are among cats and animals!",
             contentUrls:"1 - https://www.youtube.com/watch?v=IzluNxh-8_o",
             licenseType: "Restricted license",
             contentCategory: "Video",

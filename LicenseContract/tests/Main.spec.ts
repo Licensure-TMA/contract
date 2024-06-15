@@ -171,13 +171,13 @@ describe('Main', () => {
         const licenseBefore = await main.getOneLicensebyId(licenseId);
         console.log("License before purchase:", licenseBefore);
         
-        const forTransfer = price + (price * BigInt(3) / BigInt(100));
+        const forTransfer = price + (price * BigInt(5) / BigInt(100));
         console.log('amount:', price, ' ', 'forTransfer:', forTransfer);
         await main.send(deployer.getSender(), { value: toNano(forTransfer) }, { 
             $$type: 'LicenseBuyV2',
             licenseId: licenseId,
             buyerAddress: address('UQCbnJk3TBqKhQT8N_TaqDtCyLDyBKRSPxZhYWsn23X0UTeo'),
-            amount: price
+            cost: price
         });
         
         const boughtLicenseId = await main.getResultOfBuy(address('UQCbnJk3TBqKhQT8N_TaqDtCyLDyBKRSPxZhYWsn23X0UTeo'));

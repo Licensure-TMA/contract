@@ -54,6 +54,7 @@ PROGRAM{
   DECLPROC $Main$_fun_forward
   DECLPROC $Main$_fun_notify
   DECLPROC $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status
+  DECLPROC $SendParameters$_constructor_to_bounce_value_mode_body
   DECLPROC $SendParameters$_constructor_to_bounce_value_mode
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $Main$_internal_binary_LicenseCreate
@@ -580,7 +581,7 @@ PROGRAM{
   $LicenseBuyV2$_load PROCINLINE:<{
     32 LDU
     SWAP
-    897895574 PUSHINT
+    15630029 PUSHINT
     EQUAL
     129 THROWIFNOT
     257 PUSHINT
@@ -866,6 +867,11 @@ PROGRAM{
   }>
   $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status PROCINLINE:<{
   }>
+  $SendParameters$_constructor_to_bounce_value_mode_body PROCINLINE:<{
+    s3 s4 XCHG
+    PUSHNULL
+    PUSHNULL
+  }>
   $SendParameters$_constructor_to_bounce_value_mode PROCINLINE:<{
     s2 s3 XCHG
     PUSHNULL
@@ -1036,6 +1042,9 @@ PROGRAM{
     $License$_load_opt INLINECALLDICT
     $License$_not_null INLINECALLDICT
     s12 POP
+    s0 s14 XCHG
+    1000000000 PUSHINT
+    MUL
     6108 PUSHINT
     16 s() PUSH
     s14 PUSH
@@ -1052,6 +1061,11 @@ PROGRAM{
     s0 s13 XCHG2
     __tact_slice_eq INLINECALLDICT
     s1 s12 XCHG
+    THROWANYIFNOT
+    48618 PUSHINT
+    __tact_my_balance INLINECALLDICT
+    s12 PUSH
+    GEQ
     THROWANYIFNOT
     B{b5ee9c72410101010006000008506169643e7d7b66} B>boc <s PUSHSLICE
     s15 PUSH
@@ -1077,16 +1091,17 @@ PROGRAM{
     s4 25 s() XCHG
     s0 s3 XCHG
     s2 25 s() XCHG
-    s1 16 s() XCHG
+    s1 17 s() XCHG
     $License$_store_cell INLINECALLDICT
-    s11 s11 s0 XCHG3
+    s11 s3 s0 XCHG3
     s5 s(-1) PUXC
     __tact_dict_set_int_cell INLINECALLDICT
-    s1 s9 XCHG
     TRUE
-    s0 s10 XCHG2
-    66 PUSHINT
-    $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
+    3 PUSHINT
+    B{b5ee9c7241010101001600002800000000427579696e672061206c6963656e736507b5049d} B>boc PUSHREF
+    s2 s3 XCHG
+    s2 s12 XCHG
+    $SendParameters$_constructor_to_bounce_value_mode_body INLINECALLDICT
     $global_send INLINECALLDICT
     s0 s3 XCHG
     267 PUSHINT
@@ -1113,7 +1128,7 @@ PROGRAM{
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
     SUB
-    20000000 PUSHINT
+    10000000 PUSHINT
     SUB
     66 PUSHINT
     $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
@@ -1177,7 +1192,7 @@ PROGRAM{
     209474421377847335869795010607481022628 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d594e33387854626767545544676e4163484c5874646b7a4b6136466a673653715656437967336f4278574d65} PUSHSLICE
+    x{697066733a2f2f516d553362536f356933437046554e6676456b326d32714d50787a58766b4733364b4b4265447361694c51686655} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1233,7 +1248,7 @@ PROGRAM{
       TRUE
     }>
     DUP
-    897895574 PUSHINT
+    15630029 PUSHINT
     EQUAL
     IFJMP:<{
       DROP

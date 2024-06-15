@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: Main
-BOC Size: 2826 bytes
+BOC Size: 2867 bytes
 
 # Types
 Total Types: 12
@@ -50,8 +50,8 @@ TLB: `license_buy#863c797b licenseId:int257 buyerAddress:address = LicenseBuy`
 Signature: `LicenseBuy{licenseId:int257,buyerAddress:address}`
 
 ## LicenseBuyV2
-TLB: `license_buy_v2#3584cc96 licenseId:int257 buyerAddress:address amount:coins = LicenseBuyV2`
-Signature: `LicenseBuyV2{licenseId:int257,buyerAddress:address,amount:coins}`
+TLB: `license_buy_v2#00ee7ecd licenseId:int257 buyerAddress:address cost:coins = LicenseBuyV2`
+Signature: `LicenseBuyV2{licenseId:int257,buyerAddress:address,cost:coins}`
 
 # Get Methods
 Total Get Methods: 6
@@ -101,4 +101,5 @@ Argument: licenseId
 15509: Only deployer is allowed to withdraw
 23004: No permission to delete
 46050: No license exists
+48618: Insufficient funds for transfer
 50625: License is already purchased

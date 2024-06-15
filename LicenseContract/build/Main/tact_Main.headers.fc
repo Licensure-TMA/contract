@@ -168,6 +168,9 @@ slice $Int$_fun_toCoinsString(int $self) impure inline;
 ;; $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status
 ((int, slice, slice, int, slice, slice, slice, slice, slice, slice, int, slice, slice, slice, slice)) $License$_constructor_licenseId_sellerAddress_buyerAddress_createdAt_contentName_contentDescription_contentUrls_licenseType_contentCategory_contentSubcategory_price_currency_allRestrictions_additionalTerms_status(int licenseId, slice sellerAddress, slice buyerAddress, int createdAt, slice contentName, slice contentDescription, slice contentUrls, slice licenseType, slice contentCategory, slice contentSubcategory, int price, slice currency, slice allRestrictions, slice additionalTerms, slice status) inline;
 
+;; $SendParameters$_constructor_to_bounce_value_mode_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_bounce_value_mode_body(slice to, int bounce, int value, int mode, cell body) inline;
+
 ;; $SendParameters$_constructor_to_bounce_value_mode
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_bounce_value_mode(slice to, int bounce, int value, int mode) inline;
 

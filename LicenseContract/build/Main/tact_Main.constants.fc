@@ -6,3 +6,6 @@ slice __gen_slice_string_4ecaf18c39fa13cb82f1fc3ed343fe15bcf6a0c9df909679d764646
 
 ;; String "Paid"
 slice __gen_slice_string_84916524b9e8f10533f5cd9c2855ca81c0bb05fc84dcec43114cb12cc47300c5() asm "B{b5ee9c72410101010006000008506169643e7d7b66} B>boc <s PUSHSLICE";
+
+;; Comment "Buying a license"
+cell __gen_cell_comment_57c72522ae76c8c849fae3deb529d8b57040c08dbeb6be3bda682d8822f40cf8() asm "B{b5ee9c7241010101001600002800000000427579696e672061206c6963656e736507b5049d} B>boc PUSHREF";

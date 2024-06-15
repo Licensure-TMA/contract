@@ -49,7 +49,7 @@ message LicenseBuy {
 message LicenseBuyV2 {
     licenseId: Int;
     buyerAddress: Address;
-    amount: Int as coins;
+    cost: Int as coins;
 }
 
 contract Main with Deployable {
@@ -59,7 +59,7 @@ contract Main with Deployable {
     pairsUsersDeletedContracts: map<Address, Int>;
     pairsUsersBoughtContracts: map<Address, Int>;
 
-    const MinTonForStorage: Int = ton("0.02"); // enough for 1 KB of storage for 2.5 years
+    const MinTonForStorage: Int = ton("0.01");
     deployer: Address;
 
     init(id: Int) {
@@ -146,10 +146,14 @@ contract Main with Deployable {
         //Make copy of License
         let license: License = self.licenses.map.get(msg.licenseId)!!;
 
+        //Convert to nano
+        let transfer: Int = msg.cost * 1000000000;
+
         //Check License
         require(license.sellerAddress != msg.buyerAddress, "No permission to buy");
         require(license.licenseId != null, "No license exists");
         require(license.status == "Pending", "License is already purchased");
+        require(myBalance() >= transfer, "Insufficient funds for transfer");
 
         //Mark as Paid
         license.status = "Paid";
@@ -165,8 +169,9 @@ contract Main with Deployable {
         send(SendParameters{
             to: license.sellerAddress,
             bounce: true,
-            value: msg.amount,
-            mode: SendRemainingValue + SendIgnoreErrors
+            value: transfer,
+            mode: SendIgnoreErrors + SendPayGasSeparately,
+            body: "Buying a license".asComment()
         });
 
         //Update operation result
